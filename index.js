@@ -18,6 +18,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.get("/MicroService", function (req, res) {
     //res.send("Bot works");
     console.log('Inside get method');
+    const header = {
+        'Cache-Control': 'no-cache',
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+    };
     //https://limitless-beyond-94753.herokuapp.com/RailwayAPI
 
     // let action = 'LaunchRequest';
