@@ -15,7 +15,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //Configuring express app behaviour
 
 app.get("/MicroService", function (req, res) {
-
+    res.send("Bot works");
     console.log('Inside get method');
     //https://limitless-beyond-94753.herokuapp.com/RailwayAPI
 
