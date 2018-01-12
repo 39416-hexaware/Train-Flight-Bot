@@ -1,6 +1,8 @@
 //imports
 var express = require('express');
 var bodyParser = require('body-parser');
+var data = require('./dataProcessor');
+var async = require('async');
 
 app = express();
 //Create express object
@@ -12,12 +14,39 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 //Configuring express app behaviour
 
-app.get("/api", function (req, res) {
-    res.send("Bot works");
+app.get("/MicroService", function (req, res) {
+
+    console.log('Inside get method');
+    //https://limitless-beyond-94753.herokuapp.com/RailwayAPI
+
+    let action = 'LaunchRequest';
+    data.DataProcess[action];
+
+    async.parallel([
+        function (firstfn) {
+            console.log('Inside MicroService');
+            data.DataProcess[action];
+            firstfn(false, 'Data received Successfully');
+        }],
+        function (err, results) {
+            res.send("Bot works");
+            console.log(results);
+        });
 });
 //GET Endpoint
 
-app.post("/api", function (req, res) {
+app.post("/MicroService", function (req, res) {
+    let action = 'LaunchRequest';
+
+    async.parallel([
+        function (firstfn) {
+            console.log('Inside MicroService');
+            data.DataProcess[action];
+            firstfn(false, 'Data received Successfully');
+        }],
+        function (err, results) {
+            console.log(results);
+        });
     console.log(JSON.stringify(req.body.result.action));
 
     console.log('req.body.originalRequest.source');

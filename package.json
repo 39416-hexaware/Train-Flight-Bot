@@ -5,14 +5,16 @@
   "main": "index.js",
   "scripts": {
     "start": "pm2  start index.js",
-    "stop":"pm2 stop all"
+    "stop": "pm2 stop all"
   },
   "author": "Mubashshir Mohammed A",
   "license": "ISC",
   "dependencies": {
     "apiai": "^4.0.3",
+    "async": "^2.6.0",
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
-    "pm2": "^2.9.1"
+    "pm2": "^2.9.1",
+    "request": "^2.83.0"
   }
 }
