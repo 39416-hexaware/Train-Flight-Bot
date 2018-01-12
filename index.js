@@ -8,7 +8,7 @@ var request = require('request');
 app = express();
 //Create express object
 
-var port = env.process.port || 7000;
+var port = process.env.port || 7000;
 //Assign port
 app.use(express.static(__dirname));
 app.use(bodyParser.json());
