@@ -3,6 +3,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var data = require('./dataProcessor');
 var async = require('async');
+var request = require('request');
 
 app = express();
 //Create express object
@@ -19,19 +20,39 @@ app.get("/MicroService", function (req, res) {
     console.log('Inside get method');
     //https://limitless-beyond-94753.herokuapp.com/RailwayAPI
 
-    let action = 'LaunchRequest';
-    data.DataProcess[action];
+    // let action = 'LaunchRequest';
+    // data.DataProcess[action];
 
-    async.parallel([
-        function (firstfn) {
-            console.log('Inside MicroService');
-            data.DataProcess[action];
-            firstfn(false, 'Data received Successfully');
-        }],
-        function (err, results) {
-            res.send("Bot works");
-            console.log(results);
-        });
+    // async.parallel([
+    //     function (firstfn) {
+    //         console.log('Inside MicroService');
+    //         data.DataProcess[action];
+    //         firstfn(false, 'Data received Successfully');
+    //     }],
+    //     function (err, results) {
+    //         res.send("Bot works");
+    //         console.log(results);
+    //     });
+
+    var options = {
+        url: 'https://limitless-beyond-94753.herokuapp.com/RailwayAPI', //,urlPath, //'https://api.railwayapi.com/v2/pnr-status/pnr/4338716830/apikey/sl5zmz3g1w'
+        method: 'GET',
+        header: header,
+        body: '',
+        json: true
+    };
+
+    request(options, function (error, response, body) {
+        if (error) {
+            console.dir(error);
+            return
+        }
+        console.log('headers:' + response.headers);
+        console.log('status code:' + response.statusCode);
+        console.log(body);
+
+        console.log('Inside data process');
+    });
 });
 //GET Endpoint
 
