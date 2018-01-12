@@ -4,8 +4,7 @@
   "description": "Bot with Train and Flight Booking Services",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"//,"pm2  start index.js",
-    //"stop": "pm2 stop all"
+    "start": "node index.js"
   },
   "author": "Mubashshir Mohammed A",
   "license": "ISC",
