@@ -154,9 +154,7 @@ function CallAPI(request, response) {
                                 "type": "template",
                                 "payload": {
                                     "template_type": "generic",
-                                    "elements": [
-                                        resptemp
-                                    ]
+                                    "elements": resptemp                                    
                                 }
                             }
                         },
