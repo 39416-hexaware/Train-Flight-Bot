@@ -99,16 +99,17 @@ app.post("/Bot", function (req, res) {
     //     }
     // }));
 
-    console.log(JSON.stringify(req.body.result.action));
+    console.log('Inside Express');
 });
 //POST Call Endpoint
 
 
 function CallAPI(request, response) {
-    console.log(JSON.stringify(request.body));
-    var intentFrom = request.body.action;
+    console.log(JSON.stringify(request.body));    
     async.parallel([
         function (firstfn) {
+            var intentFrom = request.body.action;
+
             console.log('Inside MicroService');
 
             console.log(intentFrom);
