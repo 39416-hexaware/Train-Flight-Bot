@@ -82,72 +82,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.post("/Bot", function (req, res) {
     // commonFiles.headerTemplate();
 
-    // CallAPI(req, res);
-    res.setHeader('Content-Type', 'application/json');
-    // res.send(JSON.stringify({
-    //     "data": {   
-    //         "facebook": {
-    //             "messages": [{
-    //                 "type": 1,
-    //                 "attachment": {
-    //                     "type": "template",
-    //                     "payload": {
-    //                         "template_type": "generic",
-    //                         "elements": [
-    //                             {
-    //                                 "title": "Train (2017)",
-    //                                 "image_url": "https://www.bahn.com/en/view/mdb/pv/agenturservice/2011/mdb_22990_ice_3_schnellfahrstrecke_nuernberg_-_ingolstadt_1000x500_cp_0x144_1000x644.jpg",
-    //                                 "subtitle": "Smurfette attempts to find her purpose in the village. When she encounters a creature in the Forbidden Forest who drops a mysterious map, she sets off with her friends Brainy, Clumsy, and Hefty on an adventure to find the Lost Village before the evil wizard Gargamel does."
-    //                             },
-    //                             {
-    //                                 "title": "Train - 2 (2017)",
-    //                                 "image_url": "https://www.bahn.com/en/view/mdb/pv/agenturservice/2011/mdb_22990_ice_3_schnellfahrstrecke_nuernberg_-_ingolstadt_1000x500_cp_0x144_1000x644.jpg",
-    //                                 "subtitle": "Smurfette attempts to find her purpose in the village. When she encounters a creature in the Forbidden Forest who drops a mysterious map, she sets off with her friends Brainy, Clumsy, and Hefty on an adventure to find the Lost Village before the evil wizard Gargamel does."
-    //                             }
-    //                         ]
-    //                     }
-    //                 }
-    //             }]
-    //         },
-    //         "kik": {
-    //             "type": "",
-    //             "body": ""
-    //         },
-    //         "slack": {
-    //             "text": "",
-    //             "attachments": []
-    //         },
-    //         "telegram": {
-    //             "text": ""
-    //         }
-    //     }
-    // }));
-
-    res.send(JSON.stringify({
-        "speech": "",
-        "messages": [{
-            "type": 1,
-            "attachment": {
-                "type": "template",
-                "payload": {
-                    "template_type": "generic",
-                    "elements": [
-                        {
-                            "title": "Train (2017)",
-                            "image_url": "https://www.bahn.com/en/view/mdb/pv/agenturservice/2011/mdb_22990_ice_3_schnellfahrstrecke_nuernberg_-_ingolstadt_1000x500_cp_0x144_1000x644.jpg",
-                            "subtitle": "Smurfette attempts to find her purpose in the village. When she encounters a creature in the Forbidden Forest who drops a mysterious map, she sets off with her friends Brainy, Clumsy, and Hefty on an adventure to find the Lost Village before the evil wizard Gargamel does."
-                        },
-                        {
-                            "title": "Train - 2 (2017)",
-                            "image_url": "https://www.bahn.com/en/view/mdb/pv/agenturservice/2011/mdb_22990_ice_3_schnellfahrstrecke_nuernberg_-_ingolstadt_1000x500_cp_0x144_1000x644.jpg",
-                            "subtitle": "Smurfette attempts to find her purpose in the village. When she encounters a creature in the Forbidden Forest who drops a mysterious map, she sets off with her friends Brainy, Clumsy, and Hefty on an adventure to find the Lost Village before the evil wizard Gargamel does."
-                        }
-                    ]
-                }
-            }
-        }],
-        "source": "facebook"
-      }));
+    CallAPI(req, res);
 
     console.log('Inside Express');
 });
@@ -197,21 +132,44 @@ function CallAPI(request, response) {
         function (err, result) {
             console.log('Final Result');
             console.log(result[0].total);
-            console.log(JSON.stringify(result[0].trains));
+            console.log(JSON.stringify(result[0].trains[0]));
 
             if (result[0].total > 10) {
+                var resptemp = [];
+                for(let i = 0; i < 5; i++) {
+                    var objCard = new commonFiles.cardTemplate();
+                    objCard.title = 'Test';
+                    objCard.image_url = 'https://www.bahn.com/en/view/mdb/pv/agenturservice/2011/mdb_22990_ice_3_schnellfahrstrecke_nuernberg_-_ingolstadt_1000x500_cp_0x144_1000x644.jpg';
+                    objCard.subtitle = 'testing';
+                    resptemp.push(objCard);
+
+                }
+                console.log(resptemp);
+                console.log(JSON.stringify(resptemp));
                 response.setHeader('Content-Type', 'application/json');
                 response.send(JSON.stringify({
                     "data": {
                         "facebook": {
-                            "text": "Cancel API success",
-                            "quick_replies": [
-                                {
-                                    "content_type": "text",
-                                    "title": "Cancelled",
-                                    "payload": "Cancelled"
+                            "attachment": {
+                                "type": "template",
+                                "payload": {
+                                    "template_type": "generic",
+                                    "elements": [
+                                        resptemp
+                                    ]
                                 }
-                            ]
+                            }
+                        },
+                        "kik": {
+                            "type": "",
+                            "body": ""
+                        },
+                        "slack": {
+                            "text": "",
+                            "attachments": []
+                        },
+                        "telegram": {
+                            "text": ""
                         }
                     }
                 }));

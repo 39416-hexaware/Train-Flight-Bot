@@ -33,5 +33,12 @@ var dateFormatter = function (strdate) {
     return finalDate;
 }
 
+var cardTemplate = function() {
+    var title = null;
+    var image_url = null;
+    var subtitle = null;
+};
+
 module.exports.APIList = APIList;
 module.exports.dateFormatter = dateFormatter;
+module.exports.cardTemplate = cardTemplate;
