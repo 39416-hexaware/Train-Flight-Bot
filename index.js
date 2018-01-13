@@ -104,9 +104,7 @@ app.post("/Bot", function (req, res) {
                             }                            
                         ]
                     }
-                }
-            },
-            "facebook": {
+                },
                 "text": "Anything else",
                 "quick_replies": [
                     {
@@ -115,7 +113,7 @@ app.post("/Bot", function (req, res) {
                         "payload": "Anything else"
                     }
                 ]
-            },
+            },            
             "kik": {
                 "type": "",
                 "body": ""
