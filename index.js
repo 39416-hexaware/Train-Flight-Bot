@@ -88,7 +88,7 @@ app.post("/Bot", function (req, res) {
         "data": {
             "facebook": {
                 "messages": [{
-                    "type": 4,
+                    "type": 1,
                     "attachment": {
                         "type": "template",
                         "payload": {
