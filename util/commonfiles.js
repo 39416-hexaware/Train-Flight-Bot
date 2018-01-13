@@ -20,9 +20,18 @@ module.exports.sendMessage = function (response, message) {
 var APIList = {
     'TrainIntent.CancelIntent': (date) => {
         console.log('Inside APIList');
-        api = 'https://api.railwayapi.com/v2/cancelled/date/'+ date +'/apikey/' + APIKEY ; //Date Format: <dd-mm-yyyy>
+        api = 'https://api.railwayapi.com/v2/cancelled/date/'+ dateFormatter(date) +'/apikey/' + APIKEY ; //Date Format: <dd-mm-yyyy>
         return api;
     }    
 };
 
+var dateFormatter = function (strdate) {
+    let objDate = strdate.split('-');
+
+    console.log(objDate);
+    let finalDate = objDate[2].toString() + '-' + objDate[1].toString() + '-' + objDate[0].toString();
+    return finalDate;
+}
+
 module.exports.APIList = APIList;
+module.exports.dateFormatter = dateFormatter;
