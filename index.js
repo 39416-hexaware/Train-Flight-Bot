@@ -147,12 +147,12 @@ function CallAPI(request, response) {
         function (err, result) {
 
             console.log('Final Result');
-            console.log(result);
-            console.log(JSON.stringify(result));
+            console.log(result[0].total);
+            console.log(JSON.stringify(result[0].trains));
             console.log(result.trains);
             // console.log(result.trains.length);
 
-            if (result.trains.length > 10) {
+            if (result[0].total > 10) {
                 response.setHeader('Content-Type', 'application/json');
                 response.send(JSON.stringify({
                     "data": {
