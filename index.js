@@ -3,7 +3,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var data = require('./dataProcessor');
 var async = require('async');
-var request = require('request');
+var requestAPI = require('request');
 const commonFiles = require('./util/commonfiles');
 
 app = express();
@@ -130,7 +130,7 @@ function CallAPI(request, response) {
                     json: true
                 };
 
-                request(options, function (error, response, body) {
+                requestAPI(options, function (error, response, body) {
                     if (error) {
                         console.dir(error);
                         return
