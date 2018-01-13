@@ -111,6 +111,10 @@ function CallAPI(request, response) {
         function (firstfn) {
             console.log('Inside MicroService');
 
+            console.log(intentFrom);
+
+            console.log(request.body.result.parameters.canceldate);
+
             if (intentFrom === 'TrainIntent.CancelIntent') {
                 let cancelledDate = request.body.result.parameters.canceldate;
                 let url = commonFiles.APIList[action](cancelledDate);
