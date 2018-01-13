@@ -105,7 +105,7 @@ app.post("/Bot", function (req, res) {
 
 
 function CallAPI(request, response) {
-    console.log(JSON.stringify(request.body));    
+    console.log(JSON.stringify(request.body));
     async.parallel([
         function (firstfn) {
             var intentFrom = request.body.result.action;
@@ -136,20 +136,37 @@ function CallAPI(request, response) {
                         return
                     }
                     else {
-                        console.log('headers:' + response.headers);
                         console.log('status code:' + response.statusCode);
-                        console.log(body);
 
                         console.log('Inside data process');
-                        firstfn(false, body);
+                        firstfn(false, JSON.stringify(body));
                     }
                 });
             }
         }],
-        function (err, results) {
+        function (err, result) {
 
             console.log('Final Result')
-            console.log(results);
+            console.log(result.trains);
+            console.log(result.trains.length);
+
+            if (result.trains.length > 10) {
+                response.setHeader('Content-Type', 'application/json');
+                response.send(JSON.stringify({
+                    "data": {
+                        "facebook": {
+                            "text": "Cancel API success",
+                            "quick_replies": [
+                                {
+                                    "content_type": "text",
+                                    "title": "Cancelled",
+                                    "payload": "Cancelled"
+                                }
+                            ]
+                        }
+                    }
+                }));
+            }
         });
 }
 
