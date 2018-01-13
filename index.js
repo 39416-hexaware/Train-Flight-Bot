@@ -147,10 +147,10 @@ function CallAPI(request, response) {
         function (err, result) {
 
             console.log('Final Result')
-            console.log(result.trains);
-            console.log(result.trains.length);
+            console.log(result);
+            // console.log(result.trains.length);
 
-            if (result.trains.length > 10) {
+            // if (result.trains.length > 10) {
                 response.setHeader('Content-Type', 'application/json');
                 response.send(JSON.stringify({
                     "data": {
@@ -166,7 +166,7 @@ function CallAPI(request, response) {
                         }
                     }
                 }));
-            }
+            // }
         });
 }
 
