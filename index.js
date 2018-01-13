@@ -108,7 +108,7 @@ function CallAPI(request, response) {
     console.log(JSON.stringify(request.body));    
     async.parallel([
         function (firstfn) {
-            var intentFrom = request.body.action;
+            var intentFrom = request.body.result.action;
 
             console.log('Inside MicroService');
 
