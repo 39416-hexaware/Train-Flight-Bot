@@ -4,6 +4,7 @@ var bodyParser = require('body-parser');
 var data = require('./dataProcessor');
 var async = require('async');
 var request = require('request');
+const commonFiles = require('./util/commonfiles');
 
 app = express();
 //Create express object
@@ -79,26 +80,73 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // });
 
 app.post("/Bot", function (req, res) {
-    console.log(JSON.stringify(req.body));
-    res.setHeader('Content-Type', 'application/json');
-    res.send(JSON.stringify({
-        "data": {
-            "facebook": {
-                "text": "Choose a department:",
-                "quick_replies": [
-                    {
-                        "content_type": "text",
-                        "title": "Cancelled",
-                        "payload": "Cancelled"
-                    }
-                ]
-            }
-        }
-    }));
+    // commonFiles.headerTemplate();
+
+    CallAPI(req, res);
+    // res.setHeader('Content-Type', 'application/json');
+    // res.send(JSON.stringify({
+    //     "data": {
+    //         "facebook": {
+    //             "text": "Choose a department:",
+    //             "quick_replies": [
+    //                 {
+    //                     "content_type": "text",
+    //                     "title": "Cancelled",
+    //                     "payload": "Cancelled"
+    //                 }
+    //             ]
+    //         }
+    //     }
+    // }));
 
     console.log(JSON.stringify(req.body.result.action));
 });
 //POST Call Endpoint
+
+
+function CallAPI(request, response) {
+    console.log(JSON.stringify(request.body));
+    var intentFrom = request.body.action;
+    async.parallel([
+        function (firstfn) {
+            console.log('Inside MicroService');
+
+            if (intentFrom === 'TrainIntent.CancelIntent') {
+                let cancelledDate = request.body.result.parameters.canceldate;
+                let url = commonFiles.APIList[action](cancelledDate);
+
+                console.log(url);
+
+                var options = {
+                    url: url,
+                    method: 'GET',
+                    header: commonFiles.headerTemplate(),
+                    body: '',
+                    json: true
+                };
+
+                request(options, function (error, response, body) {
+                    if (error) {
+                        console.dir(error);
+                        return
+                    }
+                    else {
+                        console.log('headers:' + response.headers);
+                        console.log('status code:' + response.statusCode);
+                        console.log(body);
+
+                        console.log('Inside data process');
+                        firstfn(false, body);
+                    }
+                });
+            }
+        }],
+        function (err, results) {
+
+            console.log('Final Result')
+            console.log(results);
+        });
+}
 
 console.log("Server Running at Port : " + port);
 
