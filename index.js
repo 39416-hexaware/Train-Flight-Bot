@@ -118,7 +118,7 @@ function CallAPI(request, response) {
 
             if (intentFrom === 'TrainIntent.CancelIntent') {
                 let cancelledDate = request.body.result.parameters.canceldate;
-                let url = commonFiles.APIList[action](cancelledDate);
+                let url = commonFiles.APIList[intentFrom](cancelledDate);
 
                 console.log(url);
 
