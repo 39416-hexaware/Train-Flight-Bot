@@ -82,22 +82,75 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.post("/Bot", function (req, res) {
     // commonFiles.headerTemplate();
 
-    CallAPI(req, res);
-    // res.setHeader('Content-Type', 'application/json');
-    // res.send(JSON.stringify({
-    //     "data": {
-    //         "facebook": {
-    //             "text": "Choose a department:",
-    //             "quick_replies": [
-    //                 {
-    //                     "content_type": "text",
-    //                     "title": "Cancelled",
-    //                     "payload": "Cancelled"
-    //                 }
-    //             ]
-    //         }
-    //     }
-    // }));
+    // CallAPI(req, res);
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify({
+        "data": {
+            "facebook": {
+                "attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "generic",
+                        "elements": [
+                            {
+                                "title": "Smurfs: The Lost Village (2017)",
+                                "image_url": "https://www.moovrika.com/ext/makeimg.php?tbl=movies&id=15666&img=1&type=image&movie=Smurfs+The+Lost+Village&fs=400",
+                                "subtitle": "Smurfette attempts to find her purpose in the village. When she encounters a creature in the Forbidden Forest who drops a mysterious map, she sets off with her friends Brainy, Clumsy, and Hefty on an adventure to find the Lost Village before the evil wizard Gargamel does.",
+                                "default_action": {
+                                    "type": "web_url",
+                                    "url": "https://www.moovrika.com/m/15666",
+                                    "webview_height_ratio": "tall"
+                                },
+                                "buttons": [
+                                    {
+                                        "title": "more info",
+                                        "type": "web_url",
+                                        "url": "https://www.moovrika.com/m/4082",
+                                        "webview_height_ratio": "tall"
+                                    },
+                                    {
+                                        "title": "View trailer",
+                                        "type": "web_url",
+                                        "url": "https://www.moovrika.com/m/4082",
+                                        "webview_height_ratio": "tall"
+                                    }
+                                ]
+                            },
+                            {
+                                "title": "Resident Evil: The Final Chapter (2017)",
+                                "image_url": "https://www.moovrika.com/ext/makeimg.php?tbl=movies&id=4167&img=1&type=image&movie=Resident+Evil+The+Final+Chapter&fs=400",
+                                "subtitle": "Resident Evil: The Final Chapter is an upcoming science fiction action horror film written and directed by Paul W. S. Anderson. It is the sequel to Resident Evil: Retribution (2012), and will be the sixth and final installment in the Resident Evil film series, which is very loosely based on the Capcom survival horror video game series Resident Evil.",
+                                "default_action": {
+                                    "type": "web_url",
+                                    "url": "https://www.moovrika.com/m/4167",
+                                    "webview_height_ratio": "tall"
+                                },
+                                "buttons": [
+                                    {
+                                        "title": "more info",
+                                        "type": "web_url",
+                                        "url": "https://www.moovrika.com/m/4082",
+                                        "webview_height_ratio": "tall"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            },
+            "kik": {
+                "type": "",
+                "body": ""
+            },
+            "slack": {
+                "text": "",
+                "attachments": []
+            },
+            "telegram": {
+                "text": ""
+            }
+        }
+    }));
 
     console.log('Inside Express');
 });
@@ -145,12 +198,9 @@ function CallAPI(request, response) {
             }
         }],
         function (err, result) {
-
             console.log('Final Result');
             console.log(result[0].total);
             console.log(JSON.stringify(result[0].trains));
-            console.log(result.trains);
-            // console.log(result.trains.length);
 
             if (result[0].total > 10) {
                 response.setHeader('Content-Type', 'application/json');
