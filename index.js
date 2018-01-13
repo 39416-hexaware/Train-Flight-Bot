@@ -106,6 +106,16 @@ app.post("/Bot", function (req, res) {
                     }
                 }
             },
+            "facebook": {
+                "text": "Anything else",
+                "quick_replies": [
+                    {
+                        "content_type": "text",
+                        "title": "Anything else",
+                        "payload": "Anything else"
+                    }
+                ]
+            },
             "kik": {
                 "type": "",
                 "body": ""
