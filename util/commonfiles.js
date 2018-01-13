@@ -1,5 +1,5 @@
 const APIKEY = 'sl5zmz3g1w';
-const api = '';
+var api = '';
 
 module.exports.headerTemplate = function () {
     var header = {
