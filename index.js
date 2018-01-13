@@ -139,16 +139,18 @@ function CallAPI(request, response) {
                         console.log('status code:' + response.statusCode);
 
                         console.log('Inside data process');
-                        firstfn(false, JSON.parse(body));
+                        firstfn(false, body);
                     }
                 });
             }
         }],
         function (err, result) {
 
-            console.log('Final Result')
+            console.log('Final Result');
+            console.log(result);
+            console.log(JSON.stringify(result));
             console.log(result.trains);
-            console.log(result.trains.length);
+            // console.log(result.trains.length);
 
             if (result.trains.length > 10) {
                 response.setHeader('Content-Type', 'application/json');
