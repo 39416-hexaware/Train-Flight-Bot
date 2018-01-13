@@ -136,11 +136,15 @@ function CallAPI(request, response) {
 
             if (result[0].total > 10) {
                 var resptemp = [];
-                for(let i = 0; i < 5; i++) {
+                for (let i = 0; i < 5; i++) {
                     var objCard = new commonFiles.cardTemplate();
-                    objCard.title = 'Test';
+                    objCard.title = result[0].trains[i].name;
                     objCard.image_url = 'https://www.bahn.com/en/view/mdb/pv/agenturservice/2011/mdb_22990_ice_3_schnellfahrstrecke_nuernberg_-_ingolstadt_1000x500_cp_0x144_1000x644.jpg';
-                    objCard.subtitle = 'testing';
+                    objCard.subtitle = `
+                                        Train Number : `+ result[0].trains[i].number + `
+                                        Source : `+ result[0].trains[i].source.name + `- ` + result[0].trains[i].source.code + `
+                                        Destination : `+ result[0].trains[i].dest.name + `- ` + result[0].trains[i].dest.code + `
+                                        `;
                     resptemp.push(objCard);
 
                 }
@@ -154,7 +158,7 @@ function CallAPI(request, response) {
                                 "type": "template",
                                 "payload": {
                                     "template_type": "generic",
-                                    "elements": resptemp                                    
+                                    "elements": resptemp
                                 }
                             }
                         },
