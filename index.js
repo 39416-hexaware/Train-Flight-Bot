@@ -107,13 +107,32 @@ function CallAPI(request, response) {
                         },
                         "slack": {
                             "text": "",
-                            "attachment": {
-                                "type": "template",
-                                "payload": {
-                                    "template_type": "generic",
-                                    "elements": resptemp
+                            "attachments": [
+                                {
+                                    "fallback": "Required plain-text summary of the attachment.",
+                                    "color": "#36a64f",
+                                    "pretext": "Cancelled Train Details",
+                                    "title": "Chennai AP",
+                                    "text": "456",
+                                    "image_url": "https://www.bahn.com/en/view/mdb/pv/agenturservice/2011/mdb_22990_ice_3_schnellfahrstrecke_nuernberg_-_ingolstadt_1000x500_cp_0x144_1000x644.jpg",
+                                    "thumb_url": "https://www.bahn.com/en/view/mdb/pv/agenturservice/2011/mdb_22990_ice_3_schnellfahrstrecke_nuernberg_-_ingolstadt_1000x500_cp_0x144_1000x644.jpg",
+                                    "footer": "Train Cancelled",
+                                    "footer_icon": "https://platform.slack-edge.com/img/default_application_icon.png",
+                                    "ts": 123456789
+                                },
+                                {
+                                    "fallback": "Required plain-text summary of the attachment.",
+                                    "color": "#36a64f",
+                                    "pretext": "Cancelled Train Details",
+                                    "title": "Chennai AP",
+                                    "text": "456",
+                                    "image_url": "https://www.bahn.com/en/view/mdb/pv/agenturservice/2011/mdb_22990_ice_3_schnellfahrstrecke_nuernberg_-_ingolstadt_1000x500_cp_0x144_1000x644.jpg",
+                                    "thumb_url": "https://www.bahn.com/en/view/mdb/pv/agenturservice/2011/mdb_22990_ice_3_schnellfahrstrecke_nuernberg_-_ingolstadt_1000x500_cp_0x144_1000x644.jpg",
+                                    "footer": "Train Cancelled",
+                                    "footer_icon": "https://platform.slack-edge.com/img/default_application_icon.png",
+                                    "ts": 123456789
                                 }
-                            }
+                            ]
                         },
                         "telegram": {
                             "text": ""
