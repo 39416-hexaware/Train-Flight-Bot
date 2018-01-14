@@ -136,6 +136,7 @@ function CallAPI(request, response) {
         }],
         function (err, result) {
             console.log('Final Result');
+            console.log(result);
             console.log(result[0].total);
             console.log(JSON.stringify(result[0].trains[0]));
 
