@@ -78,17 +78,28 @@ function CallAPI(request, response) {
             console.log(result);
 
             if (intentFrom === 'TrainIntent.CancelIntent') {
-                var resptemp = [];
+                var FBResp = [], SlackResp = [];
                 for (let i = 0; i < 5; i++) {
-                    var objCard = new commonFiles.cardTemplate();
-                    objCard.title = result[0][0].trains[i].name;
-                    objCard.image_url = 'https://www.bahn.com/en/view/mdb/pv/agenturservice/2011/mdb_22990_ice_3_schnellfahrstrecke_nuernberg_-_ingolstadt_1000x500_cp_0x144_1000x644.jpg';
-                    objCard.subtitle = `Train Number : ` + result[0][0].trains[i].number + `, Source : ` + result[0][0].trains[i].source.name + ` - ` + result[0][0].trains[i].source.code + `, Destination : ` + result[0][0].trains[i].dest.name + ` - ` + result[0][0].trains[i].dest.code + ``;
-                    resptemp.push(objCard);
 
+                    // Facebook Carousel
+                    var objFBCard = new commonFiles.FBcardTemplate();                    
+                    objFBCard.title = result[0][0].trains[i].name;
+                    objFBCard.image_url = 'https://www.bahn.com/en/view/mdb/pv/agenturservice/2011/mdb_22990_ice_3_schnellfahrstrecke_nuernberg_-_ingolstadt_1000x500_cp_0x144_1000x644.jpg';
+                    objFBCard.subtitle = `Train Number : ` + result[0][0].trains[i].number + `, Source : ` + result[0][0].trains[i].source.name + ` - ` + result[0][0].trains[i].source.code + `, Destination : ` + result[0][0].trains[i].dest.name + ` - ` + result[0][0].trains[i].dest.code + ``;
+                    FBResp.push(objFBCard);
+
+                    // Slack Carousel
+                    var objSlackCard = new commonFiles.SlackcardTemplate();
+                    objSlackCard.title = result[0][0].trains[i].name;
+                    objSlackCard.text = `Train Number : ` + result[0][0].trains[i].number + `, Source : ` + result[0][0].trains[i].source.name + ` - ` + result[0][0].trains[i].source.code + `, Destination : ` + result[0][0].trains[i].dest.name + ` - ` + result[0][0].trains[i].dest.code + ``;
+                    objSlackCard.image_url = 'https://www.bahn.com/en/view/mdb/pv/agenturservice/2011/mdb_22990_ice_3_schnellfahrstrecke_nuernberg_-_ingolstadt_1000x500_cp_0x144_1000x644.jpg';
+                    objSlackCard.thumb_url = 'https://www.bahn.com/en/view/mdb/pv/agenturservice/2011/mdb_22990_ice_3_schnellfahrstrecke_nuernberg_-_ingolstadt_1000x500_cp_0x144_1000x644.jpg';
+                    objSlackCard.footer = 'Cancelled';
+                    SlackResp.push(objSlackCard);
                 }
 
-                console.log(resptemp);
+                console.log(FBResp);
+                console.log(SlackResp);
                 response.setHeader('Content-Type', 'application/json');
                 response.send(JSON.stringify({
                     "data": {
@@ -97,45 +108,13 @@ function CallAPI(request, response) {
                                 "type": "template",
                                 "payload": {
                                     "template_type": "generic",
-                                    "elements": resptemp
+                                    "elements": FBResp
                                 }
                             }
                         },
-                        "kik": {
-                            "type": "",
-                            "body": ""
-                        },
                         "slack": {
                             "text": "",
-                            "attachments": [
-                                {
-                                    "fallback": "Required plain-text summary of the attachment.",
-                                    "color": "#36a64f",
-                                    "pretext": "Cancelled Train Details",
-                                    "title": "Chennai AP",
-                                    "text": "456",
-                                    "image_url": "https://www.bahn.com/en/view/mdb/pv/agenturservice/2011/mdb_22990_ice_3_schnellfahrstrecke_nuernberg_-_ingolstadt_1000x500_cp_0x144_1000x644.jpg",
-                                    "thumb_url": "https://www.bahn.com/en/view/mdb/pv/agenturservice/2011/mdb_22990_ice_3_schnellfahrstrecke_nuernberg_-_ingolstadt_1000x500_cp_0x144_1000x644.jpg",
-                                    "footer": "Train Cancelled",
-                                    "footer_icon": "https://platform.slack-edge.com/img/default_application_icon.png",
-                                    "ts": 123456789
-                                },
-                                {
-                                    "fallback": "Required plain-text summary of the attachment.",
-                                    "color": "#36a64f",
-                                    "pretext": "Cancelled Train Details",
-                                    "title": "Chennai AP",
-                                    "text": "456",
-                                    "image_url": "https://www.bahn.com/en/view/mdb/pv/agenturservice/2011/mdb_22990_ice_3_schnellfahrstrecke_nuernberg_-_ingolstadt_1000x500_cp_0x144_1000x644.jpg",
-                                    "thumb_url": "https://www.bahn.com/en/view/mdb/pv/agenturservice/2011/mdb_22990_ice_3_schnellfahrstrecke_nuernberg_-_ingolstadt_1000x500_cp_0x144_1000x644.jpg",
-                                    "footer": "Train Cancelled",
-                                    "footer_icon": "https://platform.slack-edge.com/img/default_application_icon.png",
-                                    "ts": 123456789
-                                }
-                            ]
-                        },
-                        "telegram": {
-                            "text": ""
+                            "attachments": SlackResp
                         }
                     }
                 }));
