@@ -5,7 +5,7 @@ var data = require('./dataProcessor');
 var async = require('async');
 var requestAPI = require('request');
 const commonFiles = require('./util/commonfiles');
-
+var intentFrom = '';
 app = express();
 //Create express object
 
@@ -16,71 +16,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 //Configuring express app behaviour
 
-// app.get("/MicroService", function (req, res) {
-//     //res.send("Bot works");
-//     console.log('Inside get method');
-//     const header = {
-//         'Cache-Control': 'no-cache',
-//         Accept: 'application/json',
-//         'Content-Type': 'application/json'
-//     };
-//     //https://limitless-beyond-94753.herokuapp.com/RailwayAPI
-
-//     // let action = 'LaunchRequest';
-//     // data.DataProcess[action];
-
-//     // async.parallel([
-//     //     function (firstfn) {
-//     //         console.log('Inside MicroService');
-//     //         data.DataProcess[action];
-//     //         firstfn(false, 'Data received Successfully');
-//     //     }],
-//     //     function (err, results) {
-//     //         res.send("Bot works");
-//     //         console.log(results);
-//     //     });
-
-//     var options = {
-//         url: 'https://limitless-beyond-94753.herokuapp.com/RailwayAPI', //,urlPath, //'https://api.railwayapi.com/v2/pnr-status/pnr/4338716830/apikey/sl5zmz3g1w'
-//         method: 'POST',
-//         header: header,
-//         body: '',
-//         json: true
-//     };
-
-//     request(options, function (error, response, body) {
-//         if (error) {
-//             console.dir(error);
-//             return
-//         }
-//         console.log('headers:' + response.headers);
-//         console.log('status code:' + response.statusCode);
-//         console.log(body);
-
-//         console.log('Inside data process');
-//     });
-// });
+app.get("/MicroService", function (req, res) {
+    res.send("Bot works");
+});
 //GET Endpoint
 
-// app.post("/MicroService", function (req, res) {
-//     let action = 'LaunchRequest';
-
-//     async.parallel([
-//         function (firstfn) {
-//             console.log('Inside MicroService');
-//             data.DataProcess[action];
-//             firstfn(false, 'Data received Successfully');
-//         }],
-//         function (err, results) {
-//             console.log(results);
-//         });
-//     console.log(JSON.stringify(req.body.result.action));
-
-//     console.log('req.body.originalRequest.source');
-// });
-
 app.post("/Bot", function (req, res) {
-    // commonFiles.headerTemplate();
 
     CallAPI(req, res);
 
@@ -93,66 +34,61 @@ function CallAPI(request, response) {
     console.log(JSON.stringify(request.body));
     async.parallel([
         function (firstfn) {
-            var intentFrom = request.body.result.action;
+            intentFrom = request.body.result.action;
+            var data = '', url = '';
 
             console.log('Inside MicroService');
 
-            console.log(intentFrom);
-
-            console.log(request.body.result.parameters.canceldate);
-
             if (intentFrom === 'TrainIntent.CancelIntent') {
                 let cancelledDate = request.body.result.parameters.canceldate;
-                let url = commonFiles.APIList['RailwayAPI']();
+                url = commonFiles.APIList['RailwayAPI']();
 
                 console.log(url);
 
-                var data = {
+                data = {
                     "IntentName": intentFrom,
                     "CancelledDate": cancelledDate
-                  };  
-
-                  console.log(data);
-                var options = {
-                    url: url,
-                    method: 'POST',
-                    header: commonFiles.headerTemplate(),
-                    body: data,
-                    json: true
                 };
-
-                requestAPI(options, function (error, response, body) {
-                    if (error) {
-                        console.dir(error);
-                        return
-                    }
-                    else {
-                        console.log('status code:' + response.statusCode);
-
-                        console.log('Inside data process');
-                        firstfn(false, body);
-                    }
-                });
+                console.log(data);
             }
+
+            var options = {
+                url: url,
+                method: 'POST',
+                header: commonFiles.headerTemplate(),
+                body: data,
+                json: true
+            };
+
+            requestAPI(options, function (error, response, body) {
+                if (error) {
+                    console.dir(error);
+                    return
+                }
+                else {
+                    console.log('status code:' + response.statusCode);
+
+                    console.log('Inside data process');
+                    firstfn(false, body);
+                }
+            });
         }],
         function (err, result) {
             console.log('Final Result');
             console.log(result);
-            console.log(result[0][0].total);
-            console.log(JSON.stringify(result[0][0].trains[0]));
 
-            if (result[0][0].total > 10) {
+            if (intentFrom === 'TrainIntent.CancelIntent') {
                 var resptemp = [];
                 for (let i = 0; i < 5; i++) {
                     var objCard = new commonFiles.cardTemplate();
                     objCard.title = result[0][0].trains[i].name;
                     objCard.image_url = 'https://www.bahn.com/en/view/mdb/pv/agenturservice/2011/mdb_22990_ice_3_schnellfahrstrecke_nuernberg_-_ingolstadt_1000x500_cp_0x144_1000x644.jpg';
-                    objCard.subtitle = `Train Number : `+ result[0][0].trains[i].number + `, Source : `+ result[0][0].trains[i].source.name + ` - ` + result[0][0].trains[i].source.code + `, Destination : `+ result[0][0].trains[i].dest.name + ` - ` + result[0][0].trains[i].dest.code + ``;
+                    objCard.subtitle = `Train Number : ` + result[0][0].trains[i].number + `, Source : ` + result[0][0].trains[i].source.name + ` - ` + result[0][0].trains[i].source.code + `, Destination : ` + result[0][0].trains[i].dest.name + ` - ` + result[0][0].trains[i].dest.code + ``;
                     resptemp.push(objCard);
 
                 }
+
                 console.log(resptemp);
-                console.log(JSON.stringify(resptemp));
                 response.setHeader('Content-Type', 'application/json');
                 response.send(JSON.stringify({
                     "data": {
