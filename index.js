@@ -112,6 +112,7 @@ function CallAPI(request, response) {
                     "CancelledDate": cancelledDate
                   };  
 
+                  console.log(data);
                 var options = {
                     url: url,
                     method: 'POST',
