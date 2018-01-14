@@ -106,14 +106,14 @@ function CallAPI(request, response) {
                             "body": ""
                         },
                         "slack": {
-                            "text": "Cancelled Trains",
-                            "attachment": [{
+                            "text": "",
+                            "attachment": {
                                 "type": "template",
                                 "payload": {
                                     "template_type": "generic",
                                     "elements": resptemp
                                 }
-                            }]
+                            }
                         },
                         "telegram": {
                             "text": ""
