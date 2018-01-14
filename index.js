@@ -103,15 +103,20 @@ function CallAPI(request, response) {
 
             if (intentFrom === 'TrainIntent.CancelIntent') {
                 let cancelledDate = request.body.result.parameters.canceldate;
-                let url = commonFiles.APIList[intentFrom](cancelledDate);
+                let url = commonFiles.APIList['RailwayAPI']();
 
                 console.log(url);
 
+                var data = {
+                    "IntentName": intentFrom,
+                    "CancelledDate": cancelledDate
+                  };  
+
                 var options = {
                     url: url,
-                    method: 'GET',
+                    method: 'POST',
                     header: commonFiles.headerTemplate(),
-                    body: '',
+                    body: data,
                     json: true
                 };
 
@@ -140,8 +145,7 @@ function CallAPI(request, response) {
                     var objCard = new commonFiles.cardTemplate();
                     objCard.title = result[0].trains[i].name;
                     objCard.image_url = 'https://www.bahn.com/en/view/mdb/pv/agenturservice/2011/mdb_22990_ice_3_schnellfahrstrecke_nuernberg_-_ingolstadt_1000x500_cp_0x144_1000x644.jpg';
-                    objCard.subtitle = `Train Number : `+ result[0].trains[i].number + `, Source : `+ result[0].trains[i].source.name + ` - ` + result[0].trains[i].source.code + `, Destination : `+ result[0].trains[i].dest.name + ` - ` + result[0].trains[i].dest.code + `
-                                        `;
+                    objCard.subtitle = `Train Number : `+ result[0].trains[i].number + `, Source : `+ result[0].trains[i].source.name + ` - ` + result[0].trains[i].source.code + `, Destination : `+ result[0].trains[i].dest.name + ` - ` + result[0].trains[i].dest.code + ``;
                     resptemp.push(objCard);
 
                 }

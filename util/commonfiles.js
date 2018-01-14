@@ -1,4 +1,3 @@
-const APIKEY = 'sl5zmz3g1w';
 var api = '';
 
 module.exports.headerTemplate = function () {
@@ -18,20 +17,17 @@ module.exports.sendMessage = function (response, message) {
 }
 
 var APIList = {
-    'TrainIntent.CancelIntent': (date) => {
-        console.log('Inside APIList');
-        api = 'https://api.railwayapi.com/v2/cancelled/date/'+ dateFormatter(date) +'/apikey/' + APIKEY ; //Date Format: <dd-mm-yyyy>
+    'RailwayAPI': () => {
+        console.log('Inside Railway APIList');
+        api = 'https://limitless-beyond-94753.herokuapp.com/RailwayAPI';
+        return api;
+    },
+    'FlightAPI': () => {
+        console.log('Inside Flight APIList');
+        api = 'https://limitless-beyond-94753.herokuapp.com/RailwayAPI';
         return api;
     }    
 };
-
-var dateFormatter = function (strdate) {
-    let objDate = strdate.split('-');
-
-    console.log(objDate);
-    let finalDate = objDate[2].toString() + '-' + objDate[1].toString() + '-' + objDate[0].toString();
-    return finalDate;
-}
 
 var cardTemplate = function() {
     var title = null;
@@ -40,5 +36,4 @@ var cardTemplate = function() {
 };
 
 module.exports.APIList = APIList;
-module.exports.dateFormatter = dateFormatter;
 module.exports.cardTemplate = cardTemplate;
