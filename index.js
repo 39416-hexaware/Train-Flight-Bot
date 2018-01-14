@@ -51,6 +51,42 @@ function CallAPI(request, response) {
                 };
                 console.log(data);
             }
+            else if (intentFrom === 'TrainIntent.PNRStatus') {
+                let pnrNumber = request.body.result.parameters.pnrnumber;
+                url = commonFiles.APIList['RailwayAPI']();
+
+                console.log(url);
+
+                data = {
+                    "IntentName": intentFrom,
+                    "PNRNumber": pnrNumber
+                };
+                console.log(data);
+            }
+            else if (intentFrom === 'TrainIntent.TrainRoute') {
+                let trainNumber = request.body.result.parameters.trainnumber;
+                url = commonFiles.APIList['RailwayAPI']();
+
+                console.log(url);
+
+                data = {
+                    "IntentName": intentFrom,
+                    "TrainNumber": trainNumber
+                };
+                console.log(data);
+            }
+            else if (intentFrom === 'TrainIntent.GetStationCode') {
+                let stationName = request.body.result.parameters.stationname;
+                url = commonFiles.APIList['RailwayAPI']();
+
+                console.log(url);
+
+                data = {
+                    "IntentName": intentFrom,
+                    "StationName": stationName
+                };
+                console.log(data);
+            }
 
             var options = {
                 url: url,
