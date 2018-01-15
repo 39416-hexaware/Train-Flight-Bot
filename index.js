@@ -107,7 +107,7 @@ function CallAPI(request, response) {
             console.log('Final Result');
             console.log(result);
 
-            if (intentFrom === 'TrainIntent.CancelIntent') {                
+            if (intentFrom === 'TrainIntent.CancelIntent') {
 
                 if (result[0][0].total > 0) {
                     console.log('Checking withd data')
@@ -138,7 +138,7 @@ function CallAPI(request, response) {
                                 "attachment": {
                                     "type": "template",
                                     "payload": {
-                                        "template_type": "list",
+                                        "template_type": "generic",
                                         "elements": FBResp
                                     }
                                 }
@@ -157,7 +157,7 @@ function CallAPI(request, response) {
 
             }
             else if (intentFrom === 'TrainIntent.PNRStatus') {
-                if( result[0][0].response_code == '220') {
+                if (result[0][0].response_code == '220') {
                     msg = "PNR Number is Flushed!";
                     commonFiles.sendMessage(response, msg);
                 }
@@ -166,46 +166,39 @@ function CallAPI(request, response) {
                 }
             }
             else if (intentFrom === 'TrainIntent.TrainRoute') {
-                if( result[0][0].response_code == '200') {
+                var message = '';
+                if (result[0][0].response_code == '200') {
                     if (result[0][0].route > 0) {
                         console.log('Checking withd data')
                         for (let i = 0; i < result[0][0].route.length; i++) {
-                            // Facebook Carousel
-                            var objFBCard = new commonFiles.FBcardTemplate();
-                            objFBCard.title = result[0][0].trains[i].name;
-                            objFBCard.image_url = 'https://www.bahn.com/en/view/mdb/pv/agenturservice/2011/mdb_22990_ice_3_schnellfahrstrecke_nuernberg_-_ingolstadt_1000x500_cp_0x144_1000x644.jpg';
-                            objFBCard.subtitle = `Train Number : ` + result[0][0].trains[i].number + `, Source : ` + result[0][0].trains[i].source.name + ` - ` + result[0][0].trains[i].source.code + `, Destination : ` + result[0][0].trains[i].dest.name + ` - ` + result[0][0].trains[i].dest.code + ``;
-                            FBResp.push(objFBCard);
-    
-                            // Slack Carousel
-                            var objSlackCard = new commonFiles.SlackcardTemplate();
-                            objSlackCard.title = result[0][0].trains[i].name;
-                            objSlackCard.text = `Train Number : ` + result[0][0].trains[i].number + `, Source : ` + result[0][0].trains[i].source.name + ` - ` + result[0][0].trains[i].source.code + `, Destination : ` + result[0][0].trains[i].dest.name + ` - ` + result[0][0].trains[i].dest.code + ``;
-                            objSlackCard.image_url = 'https://www.bahn.com/en/view/mdb/pv/agenturservice/2011/mdb_22990_ice_3_schnellfahrstrecke_nuernberg_-_ingolstadt_1000x500_cp_0x144_1000x644.jpg';
-                            objSlackCard.thumb_url = 'https://www.bahn.com/en/view/mdb/pv/agenturservice/2011/mdb_22990_ice_3_schnellfahrstrecke_nuernberg_-_ingolstadt_1000x500_cp_0x144_1000x644.jpg';
-                            objSlackCard.footer = 'Cancelled';
-                            SlackResp.push(objSlackCard);
+                            message += result[0][0].route[i].station.name + ', ';
                         }
-    
+
                         console.log(FBResp);
                         console.log(SlackResp);
                         response.setHeader('Content-Type', 'application/json');
                         response.send(JSON.stringify({
-                            "data": {
-                                "facebook": {
-                                    "attachment": {
-                                        "type": "template",
-                                        "payload": {
-                                            "template_type": "generic",
-                                            "elements": FBResp
-                                        }
-                                    }
+                            "speech": "",
+                            "messages": [
+                                {
+                                    "type": 0,
+                                    "speech": "Train route - "
                                 },
-                                "slack": {
-                                    "text": "",
-                                    "attachments": SlackResp
+                                {
+                                    "type": 0,
+                                    "speech": message
+                                },
+                                {
+                                    "type": 2,
+                                    "title": "What time is suitable for you?",
+                                    "replies": [
+                                        "12:00",
+                                        "13:00",
+                                        "14:00",
+                                        "15:00"
+                                    ]
                                 }
-                            }
+                            ]
                         }));
                     }
                 }
@@ -215,14 +208,14 @@ function CallAPI(request, response) {
                 }
             }
             else if (intentFrom === 'TrainIntent.GetStationCode') {
-                if( result[0][0].response_code == '200') {
+                if (result[0][0].response_code == '200') {
                     msg = "PNR Number is Flushed!";
                     commonFiles.sendMessage(response, msg);
                 }
                 else {
                     msg = "Error occurred!";
                     commonFiles.sendMessage(response, msg);
-                } 
+                }
             }
         });
 }
