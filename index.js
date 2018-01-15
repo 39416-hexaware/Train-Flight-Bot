@@ -154,7 +154,6 @@ function CallAPI(request, response) {
                     msg = "No data found!";
                     commonFiles.sendMessage(response, msg);
                 }
-
             }
             else if (intentFrom === 'TrainIntent.PNRStatus') {
                 if (result[0][0].response_code == '220') {
@@ -193,7 +192,7 @@ function CallAPI(request, response) {
                                 },
                                 {
                                     "type": 2,
-                                    "title": "What time is suitable for you?",
+                                    "title": "Can I help you with anything else?",
                                     "replies": [
                                         "Train Services",
                                         "Flight Services",
@@ -210,9 +209,26 @@ function CallAPI(request, response) {
                 }
             }
             else if (intentFrom === 'TrainIntent.GetStationCode') {
-                if (result[0][0].response_code == '200') {
-                    msg = "PNR Number is Flushed!";
-                    commonFiles.sendMessage(response, msg);
+                console.log('Station Code data')                
+
+                if (result[0][0].stations.length > 0) {
+                    var stationsArr = [];
+                    for (let i = 0; i < result[0][0].stations.length; i++) {
+                        message += result[0][0].route[i].station.code + ' - ' + result[0][0].route[i].station.name + ', ';
+                        stationsArr.push(result[0][0].stations[i].code + ',' + result[0][0].stations[i].name);
+                    }
+
+                    response.setHeader('Content-Type', 'application/json');
+                    response.send(JSON.stringify({
+                        "speech": "",
+                        "messages": [,
+                            {
+                                "type": 2,
+                                "title": "Station Names and Codes",
+                                "replies": stationsArr
+                            }
+                        ]
+                    }));
                 }
                 else {
                     msg = "Error occurred!";
