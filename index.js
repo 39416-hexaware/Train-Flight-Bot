@@ -138,7 +138,7 @@ function CallAPI(request, response) {
                                 "attachment": {
                                     "type": "template",
                                     "payload": {
-                                        "template_type": "generic",
+                                        "template_type": "list",
                                         "elements": FBResp
                                     }
                                 }
