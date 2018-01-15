@@ -167,6 +167,9 @@ function CallAPI(request, response) {
             }
             else if (intentFrom === 'TrainIntent.TrainRoute') {
                 var message = '';
+                console.log('inside train route');
+                console.log(result[0][0].route);
+                
                 if (result[0][0].response_code == '200') {
                     if (result[0][0].route > 0) {
                         console.log('Checking withd data')
