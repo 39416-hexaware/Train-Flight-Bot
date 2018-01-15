@@ -221,7 +221,7 @@ function CallAPI(request, response) {
                     response.setHeader('Content-Type', 'application/json');
                     response.send(JSON.stringify({
                         "speech": "",
-                        "messages": [,
+                        "messages": [
                             {
                                 "type": 2,
                                 "title": "Station Names and Codes",
