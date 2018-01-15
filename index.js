@@ -214,7 +214,6 @@ function CallAPI(request, response) {
                 if (result[0][0].stations.length > 0) {
                     var stationsArr = [];
                     for (let i = 0; i < result[0][0].stations.length; i++) {
-                        message += result[0][0].route[i].station.code + ' - ' + result[0][0].route[i].station.name + ', ';
                         stationsArr.push(result[0][0].stations[i].code + ',' + result[0][0].stations[i].name);
                     }
 
