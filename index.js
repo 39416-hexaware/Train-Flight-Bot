@@ -209,14 +209,13 @@ function CallAPI(request, response) {
                 }
             }
             else if (intentFrom === 'TrainIntent.GetStationCode') {
+                var message = '';
                 console.log('Station Code data')                
 
                 if (result[0][0].stations.length > 0) {
-                    var stationsArr = [];
+                    message = 'Station Code:';
                     for (let i = 0; i < result[0][0].stations.length; i++) {
-                        if(i <= 7) {
-                            stationsArr.push(result[0][0].stations[i].code + ',' + result[0][0].stations[i].name);
-                        }                        
+                        message += result[0][0].stations[i].code + ' - ' + result[0][0].stations[i].name + ', ';
                     }
 
                     response.setHeader('Content-Type', 'application/json');
@@ -224,9 +223,8 @@ function CallAPI(request, response) {
                         "speech": "",
                         "messages": [
                             {
-                                "type": 2,
-                                "title": "Station Names and Codes",
-                                "replies": stationsArr
+                                "type": 0,
+                                "speech": message
                             }
                         ]
                     }));
