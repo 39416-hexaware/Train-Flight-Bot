@@ -140,7 +140,7 @@ function CallAPI(request, response) {
                                 "speech": "First response"
                             },
                             {
-                                "type": 4,
+                                "type": 1,
                                 "facebook": {
                                     "attachment": {
                                         "type": "template",
