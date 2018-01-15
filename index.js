@@ -53,6 +53,12 @@ function CallAPI(request, response) {
             }
             else if (intentFrom === 'TrainIntent.PNRStatus') {
                 let pnrNumber = request.body.result.parameters.pnrnumber;
+
+                if(pnrNumber.length < 5) {
+                    text = "PNR number must have 5 digits!"
+                    commonFiles.sendMessage(response, text);
+                    return false;
+                }
                 url = commonFiles.APIList['RailwayAPI']();
 
                 console.log(url);
