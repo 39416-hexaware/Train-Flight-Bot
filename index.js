@@ -109,7 +109,7 @@ function CallAPI(request, response) {
             if (intentFrom === 'TrainIntent.CancelIntent') {
                 var FBResp = [], SlackResp = [];
 
-                if (result[0][0].length > 0) {
+                if (result[0][0].total > 0) {
                     for (let i = 0; i < 5; i++) {
                         // Facebook Carousel
                         var objFBCard = new commonFiles.FBcardTemplate();
