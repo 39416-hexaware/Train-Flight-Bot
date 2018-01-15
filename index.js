@@ -42,9 +42,7 @@ function CallAPI(request, response) {
             if (intentFrom === 'TrainIntent.CancelIntent') {
                 let cancelledDate = request.body.result.parameters.canceldate;
                 url = commonFiles.APIList['RailwayAPI']();
-
                 console.log(url);
-
                 data = {
                     "IntentName": intentFrom,
                     "CancelledDate": cancelledDate
@@ -54,9 +52,7 @@ function CallAPI(request, response) {
             else if (intentFrom === 'TrainIntent.PNRStatus') {
                 let pnrNumber = request.body.result.parameters.pnrnumber;
                 url = commonFiles.APIList['RailwayAPI']();
-
                 console.log(url);
-
                 data = {
                     "IntentName": intentFrom,
                     "PNRNumber": pnrNumber
@@ -66,9 +62,7 @@ function CallAPI(request, response) {
             else if (intentFrom === 'TrainIntent.TrainRoute') {
                 let trainNumber = request.body.result.parameters.trainnumber;
                 url = commonFiles.APIList['RailwayAPI']();
-
                 console.log(url);
-
                 data = {
                     "IntentName": intentFrom,
                     "TrainNumber": trainNumber
@@ -78,9 +72,7 @@ function CallAPI(request, response) {
             else if (intentFrom === 'TrainIntent.GetStationCode') {
                 let stationName = request.body.result.parameters.stationname;
                 url = commonFiles.APIList['RailwayAPI']();
-
                 console.log(url);
-
                 data = {
                     "IntentName": intentFrom,
                     "StationName": stationName
@@ -110,50 +102,67 @@ function CallAPI(request, response) {
             });
         }],
         function (err, result) {
+            var msg = '';
             console.log('Final Result');
             console.log(result);
 
             if (intentFrom === 'TrainIntent.CancelIntent') {
                 var FBResp = [], SlackResp = [];
-                for (let i = 0; i < 5; i++) {
 
-                    // Facebook Carousel
-                    var objFBCard = new commonFiles.FBcardTemplate();                    
-                    objFBCard.title = result[0][0].trains[i].name;
-                    objFBCard.image_url = 'https://www.bahn.com/en/view/mdb/pv/agenturservice/2011/mdb_22990_ice_3_schnellfahrstrecke_nuernberg_-_ingolstadt_1000x500_cp_0x144_1000x644.jpg';
-                    objFBCard.subtitle = `Train Number : ` + result[0][0].trains[i].number + `, Source : ` + result[0][0].trains[i].source.name + ` - ` + result[0][0].trains[i].source.code + `, Destination : ` + result[0][0].trains[i].dest.name + ` - ` + result[0][0].trains[i].dest.code + ``;
-                    FBResp.push(objFBCard);
+                if (result[0][0].length > 0) {
+                    for (let i = 0; i < 5; i++) {
+                        // Facebook Carousel
+                        var objFBCard = new commonFiles.FBcardTemplate();
+                        objFBCard.title = result[0][0].trains[i].name;
+                        objFBCard.image_url = 'https://www.bahn.com/en/view/mdb/pv/agenturservice/2011/mdb_22990_ice_3_schnellfahrstrecke_nuernberg_-_ingolstadt_1000x500_cp_0x144_1000x644.jpg';
+                        objFBCard.subtitle = `Train Number : ` + result[0][0].trains[i].number + `, Source : ` + result[0][0].trains[i].source.name + ` - ` + result[0][0].trains[i].source.code + `, Destination : ` + result[0][0].trains[i].dest.name + ` - ` + result[0][0].trains[i].dest.code + ``;
+                        FBResp.push(objFBCard);
 
-                    // Slack Carousel
-                    var objSlackCard = new commonFiles.SlackcardTemplate();
-                    objSlackCard.title = result[0][0].trains[i].name;
-                    objSlackCard.text = `Train Number : ` + result[0][0].trains[i].number + `, Source : ` + result[0][0].trains[i].source.name + ` - ` + result[0][0].trains[i].source.code + `, Destination : ` + result[0][0].trains[i].dest.name + ` - ` + result[0][0].trains[i].dest.code + ``;
-                    objSlackCard.image_url = 'https://www.bahn.com/en/view/mdb/pv/agenturservice/2011/mdb_22990_ice_3_schnellfahrstrecke_nuernberg_-_ingolstadt_1000x500_cp_0x144_1000x644.jpg';
-                    objSlackCard.thumb_url = 'https://www.bahn.com/en/view/mdb/pv/agenturservice/2011/mdb_22990_ice_3_schnellfahrstrecke_nuernberg_-_ingolstadt_1000x500_cp_0x144_1000x644.jpg';
-                    objSlackCard.footer = 'Cancelled';
-                    SlackResp.push(objSlackCard);
+                        // Slack Carousel
+                        var objSlackCard = new commonFiles.SlackcardTemplate();
+                        objSlackCard.title = result[0][0].trains[i].name;
+                        objSlackCard.text = `Train Number : ` + result[0][0].trains[i].number + `, Source : ` + result[0][0].trains[i].source.name + ` - ` + result[0][0].trains[i].source.code + `, Destination : ` + result[0][0].trains[i].dest.name + ` - ` + result[0][0].trains[i].dest.code + ``;
+                        objSlackCard.image_url = 'https://www.bahn.com/en/view/mdb/pv/agenturservice/2011/mdb_22990_ice_3_schnellfahrstrecke_nuernberg_-_ingolstadt_1000x500_cp_0x144_1000x644.jpg';
+                        objSlackCard.thumb_url = 'https://www.bahn.com/en/view/mdb/pv/agenturservice/2011/mdb_22990_ice_3_schnellfahrstrecke_nuernberg_-_ingolstadt_1000x500_cp_0x144_1000x644.jpg';
+                        objSlackCard.footer = 'Cancelled';
+                        SlackResp.push(objSlackCard);
+                    }
+
+                    console.log(FBResp);
+                    console.log(SlackResp);
+                    response.setHeader('Content-Type', 'application/json');
+                    response.send(JSON.stringify({
+                        "data": {
+                            "facebook": {
+                                "attachment": {
+                                    "type": "template",
+                                    "payload": {
+                                        "template_type": "generic",
+                                        "elements": FBResp
+                                    }
+                                }
+                            },
+                            "slack": {
+                                "text": "",
+                                "attachments": SlackResp
+                            }
+                        }
+                    }));
+                }
+                else {
+                    msg = "No data found!";
+                    commonFiles.sendMessage(response, msg);
                 }
 
-                console.log(FBResp);
-                console.log(SlackResp);
-                response.setHeader('Content-Type', 'application/json');
-                response.send(JSON.stringify({
-                    "data": {
-                        "facebook": {
-                            "attachment": {
-                                "type": "template",
-                                "payload": {
-                                    "template_type": "generic",
-                                    "elements": FBResp
-                                }
-                            }
-                        },
-                        "slack": {
-                            "text": "",
-                            "attachments": SlackResp
-                        }
-                    }
-                }));
+            }
+            else if (intentFrom === 'TrainIntent.PNRStatus') {
+                
+            }
+            else if (intentFrom === 'TrainIntent.TrainRoute') {
+                
+            }
+            else if (intentFrom === 'TrainIntent.GetStationCode') {
+                
             }
         });
 }
