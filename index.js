@@ -171,7 +171,7 @@ function CallAPI(request, response) {
                 console.log(result[0][0].route);
                 
                 if (result[0][0].response_code == '200') {
-                    if (result[0][0].route > 0) {
+                    if (result[0][0].route.length > 0) {
                         console.log('Checking withd data')
                         for (let i = 0; i < result[0][0].route.length; i++) {
                             message += result[0][0].route[i].station.name + ', ';
