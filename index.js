@@ -200,7 +200,8 @@ function CallAPI(request, response) {
                             }
                           }
                         ]
-                      }
+                      }));
+                }
                 else {
                     msg = "No data found!";
                     commonFiles.sendMessage(response, msg);
