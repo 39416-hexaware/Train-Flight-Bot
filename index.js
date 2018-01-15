@@ -79,6 +79,22 @@ function CallAPI(request, response) {
                 };
                 console.log(data);
             }
+            else if (intentFrom === 'TrainIntent.BookTicket') {
+                let boardingPoint = request.body.result.parameters.boardpoint;
+                let destination = request.body.result.parameters.destination;
+                let dateoftravel = request.body.result.parameters.dateoftravel;
+                let tickets = request.body.result.parameters.tickets;
+                url = commonFiles.APIList['RailwayAPI']();
+                console.log(url);
+                data = {
+                    "IntentName": intentFrom,
+                    "BoardingPoint": boardingPoint,
+                    "Destination": destination,
+                    "DateOfTravel": dateoftravel,
+                    "Tickets": tickets
+                };
+                console.log(data);
+            }
 
             var options = {
                 url: url,
@@ -88,13 +104,15 @@ function CallAPI(request, response) {
                 json: true
             };
 
-            requestAPI(options, function (error, response, body) {
+            requestAPI(options, function (error, resp, body) {
                 if (error) {
                     console.dir(error);
+                    msg = "An error occurred!";
+                    commonFiles.sendMessage(response, msg);
                     return
                 }
                 else {
-                    console.log('status code:' + response.statusCode);
+                    console.log('status code:' + resp.statusCode);
 
                     console.log('Inside data process');
                     firstfn(false, body);
@@ -213,7 +231,7 @@ function CallAPI(request, response) {
                 console.log('Station Code data')                
 
                 if (result[0][0].stations.length > 0) {
-                    message = 'Station Code:';
+                    // message = 'Station Code : ';
                     for (let i = 0; i < result[0][0].stations.length; i++) {
                         message += result[0][0].stations[i].code + ' - ' + result[0][0].stations[i].name + ', ';
                     }
@@ -225,6 +243,15 @@ function CallAPI(request, response) {
                             {
                                 "type": 0,
                                 "speech": message
+                            },
+                            {
+                                "type": 2,
+                                "title": "Can I help you with anything else?",
+                                "replies": [
+                                    "Train Services",
+                                    "Flight Services",
+                                    "Another query"
+                                ]
                             }
                         ]
                     }));
