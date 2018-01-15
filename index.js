@@ -110,6 +110,7 @@ function CallAPI(request, response) {
                 var FBResp = [], SlackResp = [];
 
                 if (result[0][0].total > 0) {
+                    console.log('Checking withd data')
                     for (let i = 0; i < 5; i++) {
                         // Facebook Carousel
                         var objFBCard = new commonFiles.FBcardTemplate();
