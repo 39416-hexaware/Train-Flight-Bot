@@ -261,6 +261,41 @@ function CallAPI(request, response) {
                     commonFiles.sendMessage(response, msg);
                 }
             }
+            else if (intentFrom === 'TrainIntent.BookTicket') {
+                var message = '';
+                console.log('Book ticket intent')                
+
+                if (result[0][0].stations.length > 0) {
+                    // message = 'Station Code : ';
+                    for (let i = 0; i < result[0][0].stations.length; i++) {
+                        message += result[0][0].stations[i].code + ' - ' + result[0][0].stations[i].name + ', ';
+                    }
+
+                    response.setHeader('Content-Type', 'application/json');
+                    response.send(JSON.stringify({
+                        "speech": "",
+                        "messages": [
+                            {
+                                "type": 0,
+                                "speech": message
+                            },
+                            {
+                                "type": 2,
+                                "title": "Can I help you with anything else?",
+                                "replies": [
+                                    "Train Services",
+                                    "Flight Services",
+                                    "Another query"
+                                ]
+                            }
+                        ]
+                    }));
+                }
+                else {
+                    msg = "Error occurred!";
+                    commonFiles.sendMessage(response, msg);
+                }
+            }
         });
 }
 
