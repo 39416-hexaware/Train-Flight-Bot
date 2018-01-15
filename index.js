@@ -133,28 +133,74 @@ function CallAPI(request, response) {
                     console.log(SlackResp);
                     response.setHeader('Content-Type', 'application/json');
                     response.send(JSON.stringify({
-                        "speech": {
-                            "messages": [
-                                {
-                                    "type": 4,
-                                    "facebook": {
-                                        "attachment": {
-                                            "type": "template",
-                                            "payload": {
-                                                "template_type": "generic",
-                                                "elements": FBResp
-                                            }
-                                        }
+                        "speech": "",
+                        "messages": [
+                          {
+                            "type": 3,
+                            "imageUrl": "URL"
+                          },
+                          {
+                            "type": 0,
+                            "speech": "First response"
+                          },
+                          {
+                            "type": 0,
+                            "speech": "My Second Response"
+                          },
+                          {
+                            "type": 1,
+                            "title": "Welcome to Peters Hats",
+                            "image_url": "URL",
+                            "subtitle": "Weve got the right hat for everyone.",
+                            "buttons": [
+                              {
+                                "type": "web_url",
+                                "url": "URL",
+                                "title": "View Website"
+                              }
+                            ]
+                          },
+                          {
+                            "type": 2,
+                            "title": "What time is suitable for you?",
+                            "replies": [
+                              "12:00",
+                              "13:00",
+                              "14:00",
+                              "15:00"
+                            ]
+                          },
+                          {
+                            "type": 4,
+                            "facebook": {
+                              "attachment": {
+                                "type": "template",
+                                "payload": {
+                                  "template_type": "button",
+                                  "text": "What can I help you with?",
+                                  "buttons": [
+                                    {
+                                      "type": "postback",
+                                      "title": "Answer A",
+                                      "payload": "A"
                                     },
-                                    "slack": {
-                                        "text": "",
-                                        "attachments": SlackResp
+                                    {
+                                      "type": "postback",
+                                      "title": "Answer B",
+                                      "payload": "B"
+                                    },
+                                    {
+                                      "type": "postback",
+                                      "title": "Answer C",
+                                      "payload": "C"
                                     }
-                                }],
-                        }
-                        
-                    }));
-                }
+                                  ]
+                                }
+                              }
+                            }
+                          }
+                        ]
+                      }
                 else {
                     msg = "No data found!";
                     commonFiles.sendMessage(response, msg);
