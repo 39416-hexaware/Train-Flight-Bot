@@ -133,24 +133,26 @@ function CallAPI(request, response) {
                     console.log(SlackResp);
                     response.setHeader('Content-Type', 'application/json');
                     response.send(JSON.stringify({
-                        "speech": "",
-                        "messages": [
-                            {
-                                "type": 4,
-                                "facebook": {
-                                    "attachment": {
-                                        "type": "template",
-                                        "payload": {
-                                            "template_type": "generic",
-                                            "elements": FBResp
+                        "speech": {
+                            "messages": [
+                                {
+                                    "type": 4,
+                                    "facebook": {
+                                        "attachment": {
+                                            "type": "template",
+                                            "payload": {
+                                                "template_type": "generic",
+                                                "elements": FBResp
+                                            }
                                         }
+                                    },
+                                    "slack": {
+                                        "text": "",
+                                        "attachments": SlackResp
                                     }
-                                },
-                                "slack": {
-                                    "text": "",
-                                    "attachments": SlackResp
-                                }
-                            }],
+                                }],
+                        }
+                        
                     }));
                 }
                 else {
