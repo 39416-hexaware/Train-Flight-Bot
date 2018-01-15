@@ -174,7 +174,7 @@ function CallAPI(request, response) {
                     if (result[0][0].route.length > 0) {
                         console.log('Checking withd data')
                         for (let i = 0; i < result[0][0].route.length; i++) {
-                            message += result[0][0].route[i].station.name + ', ';
+                            message += result[0][0].route[i].station.code + ' - ' + result[0][0].route[i].station.name + ', ';
                         }
 
                         console.log(FBResp);
@@ -195,10 +195,9 @@ function CallAPI(request, response) {
                                     "type": 2,
                                     "title": "What time is suitable for you?",
                                     "replies": [
-                                        "12:00",
-                                        "13:00",
-                                        "14:00",
-                                        "15:00"
+                                        "Train Services",
+                                        "Flight Services",
+                                        "Another query"
                                     ]
                                 }
                             ]
