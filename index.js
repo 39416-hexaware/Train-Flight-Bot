@@ -120,7 +120,7 @@ function CallAPI(request, response) {
                 console.log(url);
                 data = {
                     "IntentName": intentFrom,
-                    "TicketNumber": ticketNumber
+                    "TicketNumber": ticketNumber.toUpperCase()
                 };
 
                 console.log(data);
