@@ -38,7 +38,7 @@ function CallAPI(request, response) {
             var data = '', url = '';
 
             console.log('Inside MicroService');
-            
+
             // Train workflow & Microservices
             if (intentFrom === 'TrainIntent.CancelIntent') {
                 let cancelledDate = request.body.result.parameters.canceldate;
@@ -364,6 +364,38 @@ function CallAPI(request, response) {
                     let ticketno = result[0][0].ticketnumber;
                     let airportdet = result[0][0].airport.code + ' - ' + result[0][0].airport.name;
                     let flightdet = result[0][0].carrier.code + ' - ' + result[0][0].carrier.name;
+                    let message = [
+                        {
+                            "type": 0,
+                            "speech": message
+                        },
+                        {
+                            "type": 1,
+                            "title": airportdet,
+                            "image_url": "URL",
+                            "subtitle": flightdet,
+                            "buttons": [{
+                                "type": "web_url",
+                                "url": "URL",
+                                "title": "View Website"
+                            }]
+                        },
+                        {
+                            "type": 2,
+                            "title": "Can I help you with anything else?",
+                            "replies": [
+                                "Train Services",
+                                "Flight Services",
+                                "Another query"
+                            ]
+                        }
+                    ];
+                    if (request.body.originalRequest.source == 'slack') {
+                        console.log('Inside slack');
+                        let arrIndex = message.findIndex(x => x.type == 1);
+                        message.splice(arrIndex, 1);
+                    }
+                    
                     console.log(ticketno);
 
                     message = 'Flight ticket has been cancelled for ticket number ' + ticketno;
@@ -372,32 +404,7 @@ function CallAPI(request, response) {
                     response.setHeader('Content-Type', 'application/json');
                     response.send(JSON.stringify({
                         "speech": "",
-                        "messages": [
-                            {
-                                "type": 0,
-                                "speech": message
-                            },
-                            // {
-                            //     "type": 1,
-                            //     "title": airportdet,
-                            //     "image_url": "URL",
-                            //     "subtitle": flightdet,
-                            //     "buttons": [ {
-                            //         "type": "web_url",
-                            //         "url": "URL",
-                            //         "title": "View Website"
-                            //       }]
-                            // },
-                            {
-                                "type": 2,
-                                "title": "Can I help you with anything else?",
-                                "replies": [
-                                    "Train Services",
-                                    "Flight Services",
-                                    "Another query"
-                                ]
-                            }
-                        ]
+                        "messages": message
                     }));
                 }
             }
