@@ -263,38 +263,61 @@ function CallAPI(request, response) {
             }
             else if (intentFrom === 'TrainIntent.BookTicket') {
                 var message = '';
-                console.log('Book ticket intent')                
+                let boardingPoint = request.body.result.parameters.boardpoint;
+                let destination = request.body.result.parameters.destination;
+                let dateoftravel = request.body.result.parameters.dateoftravel;
+                let tickets = request.body.result.parameters.tickets;
 
-                if (result[0][0].stations.length > 0) {
-                    // message = 'Station Code : ';
-                    for (let i = 0; i < result[0][0].stations.length; i++) {
-                        message += result[0][0].stations[i].code + ' - ' + result[0][0].stations[i].name + ', ';
-                    }
+                message = 'Train ticket booking for ' + tickets + ' is successful from ' + boardingPoint + ' - ' + destination + ' on ' + dateoftravel + '. Your ticket number is ';
+                console.log('Book ticket intent');
+                
+                response.setHeader('Content-Type', 'application/json');
+                response.send(JSON.stringify({
+                    "speech": "",
+                    "messages": [
+                        {
+                            "type": 0,
+                            "speech": message
+                        },
+                        {
+                            "type": 2,
+                            "title": "Can I help you with anything else?",
+                            "replies": [
+                                "Train Services",
+                                "Flight Services",
+                                "Another query"
+                            ]
+                        }
+                    ]
+                }));
 
-                    response.setHeader('Content-Type', 'application/json');
-                    response.send(JSON.stringify({
-                        "speech": "",
-                        "messages": [
-                            {
-                                "type": 0,
-                                "speech": message
-                            },
-                            {
-                                "type": 2,
-                                "title": "Can I help you with anything else?",
-                                "replies": [
-                                    "Train Services",
-                                    "Flight Services",
-                                    "Another query"
-                                ]
-                            }
-                        ]
-                    }));
-                }
-                else {
-                    msg = "Error occurred!";
-                    commonFiles.sendMessage(response, msg);
-                }
+                // if (result[0][0].stations.length > 0) {
+                //     message = 'Train ticket booking is successful for  ';
+
+                //     response.setHeader('Content-Type', 'application/json');
+                //     response.send(JSON.stringify({
+                //         "speech": "",
+                //         "messages": [
+                //             {
+                //                 "type": 0,
+                //                 "speech": message
+                //             },
+                //             {
+                //                 "type": 2,
+                //                 "title": "Can I help you with anything else?",
+                //                 "replies": [
+                //                     "Train Services",
+                //                     "Flight Services",
+                //                     "Another query"
+                //                 ]
+                //             }
+                //         ]
+                //     }));
+                // }
+                // else {
+                //     msg = "Error occurred!";
+                //     commonFiles.sendMessage(response, msg);
+                // }
             }
         });
 }
