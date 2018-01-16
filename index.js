@@ -124,86 +124,125 @@ function CallAPI(request, response) {
             var FBResp = [], SlackResp = [];
             console.log('Final Result');
             console.log(result);
-
-            if (intentFrom === 'TrainIntent.CancelIntent') {
-
-                if (result[0][0].total > 0) {
-                    console.log('Checking withd data')
-                    for (let i = 0; i < 5; i++) {
-                        // Facebook Carousel
-                        var objFBCard = new commonFiles.FBcardTemplate();
-                        objFBCard.title = result[0][0].trains[i].name;
-                        objFBCard.image_url = 'https://www.bahn.com/en/view/mdb/pv/agenturservice/2011/mdb_22990_ice_3_schnellfahrstrecke_nuernberg_-_ingolstadt_1000x500_cp_0x144_1000x644.jpg';
-                        objFBCard.subtitle = `Train Number : ` + result[0][0].trains[i].number + `, Source : ` + result[0][0].trains[i].source.name + ` - ` + result[0][0].trains[i].source.code + `, Destination : ` + result[0][0].trains[i].dest.name + ` - ` + result[0][0].trains[i].dest.code + ``;
-                        FBResp.push(objFBCard);
-
-                        // Slack Carousel
-                        var objSlackCard = new commonFiles.SlackcardTemplate();
-                        objSlackCard.title = result[0][0].trains[i].name;
-                        objSlackCard.text = `Train Number : ` + result[0][0].trains[i].number + `, Source : ` + result[0][0].trains[i].source.name + ` - ` + result[0][0].trains[i].source.code + `, Destination : ` + result[0][0].trains[i].dest.name + ` - ` + result[0][0].trains[i].dest.code + ``;
-                        objSlackCard.image_url = 'https://www.bahn.com/en/view/mdb/pv/agenturservice/2011/mdb_22990_ice_3_schnellfahrstrecke_nuernberg_-_ingolstadt_1000x500_cp_0x144_1000x644.jpg';
-                        objSlackCard.thumb_url = 'https://www.bahn.com/en/view/mdb/pv/agenturservice/2011/mdb_22990_ice_3_schnellfahrstrecke_nuernberg_-_ingolstadt_1000x500_cp_0x144_1000x644.jpg';
-                        objSlackCard.footer = 'Cancelled';
-                        SlackResp.push(objSlackCard);
-                    }
-
-                    console.log(FBResp);
-                    console.log(SlackResp);
-                    response.setHeader('Content-Type', 'application/json');
-                    response.send(JSON.stringify({
-                        "data": {
-                            "facebook": {
-                                "attachment": {
-                                    "type": "template",
-                                    "payload": {
-                                        "template_type": "generic",
-                                        "elements": FBResp
-                                    }
-                                }
-                            },
-                            "slack": {
-                                "text": "",
-                                "attachments": SlackResp
-                            }
-                        }
-                    }));
-                }
-                else {
-                    msg = "No data found!";
-                    commonFiles.sendMessage(response, msg);
-                }
+            if (result == null || result == undefined) {
+                msg = "An error occurred with API Microservice! Kindly contact adminsitrator";
+                commonFiles.sendMessage(response, msg);
             }
-            else if (intentFrom === 'TrainIntent.PNRStatus') {
-                if (result[0][0].response_code == '220') {
-                    msg = "PNR Number is Flushed!";
-                    commonFiles.sendMessage(response, msg);
-                }
-                else {
-
-                }
-            }
-            else if (intentFrom === 'TrainIntent.TrainRoute') {
-                var message = '';
-                console.log('inside train route');
-                console.log(result[0][0].route);
-                
-                if (result[0][0].response_code == '200') {
-                    if (result[0][0].route.length > 0) {
+            else {
+                if (intentFrom === 'TrainIntent.CancelIntent') {
+                    if (result[0][0].total > 0) {
                         console.log('Checking withd data')
-                        for (let i = 0; i < result[0][0].route.length; i++) {
-                            message += result[0][0].route[i].station.code + ' - ' + result[0][0].route[i].station.name + ', ';
+                        for (let i = 0; i < 5; i++) {
+                            // Facebook Carousel
+                            var objFBCard = new commonFiles.FBcardTemplate();
+                            objFBCard.title = result[0][0].trains[i].name;
+                            objFBCard.image_url = 'https://www.bahn.com/en/view/mdb/pv/agenturservice/2011/mdb_22990_ice_3_schnellfahrstrecke_nuernberg_-_ingolstadt_1000x500_cp_0x144_1000x644.jpg';
+                            objFBCard.subtitle = `Train Number : ` + result[0][0].trains[i].number + `, Source : ` + result[0][0].trains[i].source.name + ` - ` + result[0][0].trains[i].source.code + `, Destination : ` + result[0][0].trains[i].dest.name + ` - ` + result[0][0].trains[i].dest.code + ``;
+                            FBResp.push(objFBCard);
+
+                            // Slack Carousel
+                            var objSlackCard = new commonFiles.SlackcardTemplate();
+                            objSlackCard.title = result[0][0].trains[i].name;
+                            objSlackCard.text = `Train Number : ` + result[0][0].trains[i].number + `, Source : ` + result[0][0].trains[i].source.name + ` - ` + result[0][0].trains[i].source.code + `, Destination : ` + result[0][0].trains[i].dest.name + ` - ` + result[0][0].trains[i].dest.code + ``;
+                            objSlackCard.image_url = 'https://www.bahn.com/en/view/mdb/pv/agenturservice/2011/mdb_22990_ice_3_schnellfahrstrecke_nuernberg_-_ingolstadt_1000x500_cp_0x144_1000x644.jpg';
+                            objSlackCard.thumb_url = 'https://www.bahn.com/en/view/mdb/pv/agenturservice/2011/mdb_22990_ice_3_schnellfahrstrecke_nuernberg_-_ingolstadt_1000x500_cp_0x144_1000x644.jpg';
+                            objSlackCard.footer = 'Cancelled';
+                            SlackResp.push(objSlackCard);
                         }
 
                         console.log(FBResp);
                         console.log(SlackResp);
                         response.setHeader('Content-Type', 'application/json');
                         response.send(JSON.stringify({
+                            "data": {
+                                "facebook": {
+                                    "attachment": {
+                                        "type": "template",
+                                        "payload": {
+                                            "template_type": "generic",
+                                            "elements": FBResp
+                                        }
+                                    }
+                                },
+                                "slack": {
+                                    "text": "",
+                                    "attachments": SlackResp
+                                }
+                            }
+                        }));
+                    }
+                    else {
+                        msg = "No data found!";
+                        commonFiles.sendMessage(response, msg);
+                    }
+                }
+                else if (intentFrom === 'TrainIntent.PNRStatus') {
+                    if (result[0][0].response_code == '220') {
+                        msg = "PNR Number is Flushed!";
+                        commonFiles.sendMessage(response, msg);
+                    }
+                    else {
+
+                    }
+                }
+                else if (intentFrom === 'TrainIntent.TrainRoute') {
+                    var message = '';
+                    console.log('inside train route');
+                    console.log(result[0][0].route);
+
+                    if (result[0][0].response_code == '200') {
+                        if (result[0][0].route.length > 0) {
+                            console.log('Checking withd data')
+                            for (let i = 0; i < result[0][0].route.length; i++) {
+                                message += result[0][0].route[i].station.code + ' - ' + result[0][0].route[i].station.name + ', ';
+                            }
+
+                            console.log(FBResp);
+                            console.log(SlackResp);
+                            response.setHeader('Content-Type', 'application/json');
+                            response.send(JSON.stringify({
+                                "speech": "",
+                                "messages": [
+                                    {
+                                        "type": 0,
+                                        "speech": "Please find the list of routes covered from Source To destination"
+                                    },
+                                    {
+                                        "type": 0,
+                                        "speech": message
+                                    },
+                                    {
+                                        "type": 2,
+                                        "title": "Can I help you with anything else?",
+                                        "replies": [
+                                            "Train Services",
+                                            "Flight Services",
+                                            "Another query"
+                                        ]
+                                    }
+                                ]
+                            }));
+                        }
+                    }
+                    else {
+                        msg = "Error occurred!";
+                        commonFiles.sendMessage(response, msg);
+                    }
+                }
+                else if (intentFrom === 'TrainIntent.GetStationCode') {
+                    var message = '';
+                    console.log('Station Code data')
+
+                    if (result[0][0].stations.length > 0) {
+                        // message = 'Station Code : ';
+                        for (let i = 0; i < result[0][0].stations.length; i++) {
+                            message += result[0][0].stations[i].code + ' - ' + result[0][0].stations[i].name + ', ';
+                        }
+
+                        response.setHeader('Content-Type', 'application/json');
+                        response.send(JSON.stringify({
                             "speech": "",
                             "messages": [
-                                {
-                                    "type": 0,
-                                    "speech": "Please find the list of routes covered from Source To destination"
-                                },
                                 {
                                     "type": 0,
                                     "speech": message
@@ -220,21 +259,22 @@ function CallAPI(request, response) {
                             ]
                         }));
                     }
-                }
-                else {
-                    msg = "Error occurred!";
-                    commonFiles.sendMessage(response, msg);
-                }
-            }
-            else if (intentFrom === 'TrainIntent.GetStationCode') {
-                var message = '';
-                console.log('Station Code data')                
-
-                if (result[0][0].stations.length > 0) {
-                    // message = 'Station Code : ';
-                    for (let i = 0; i < result[0][0].stations.length; i++) {
-                        message += result[0][0].stations[i].code + ' - ' + result[0][0].stations[i].name + ', ';
+                    else {
+                        msg = "Error occurred!";
+                        commonFiles.sendMessage(response, msg);
                     }
+                }
+                else if (intentFrom === 'TrainIntent.BookTicket') {
+                    var message = '';
+                    let boardingPoint = request.body.result.parameters.boardpoint;
+                    let destination = request.body.result.parameters.destination;
+                    let dateoftravel = request.body.result.parameters.dateoftravel;
+                    let tickets = request.body.result.parameters.tickets;
+                    let ticketno = result[0];
+                    console.log(ticketno);
+
+                    message = 'Train ticket booking for ' + tickets + ' is successful from ' + boardingPoint + ' - ' + destination + ' on ' + dateoftravel + '. Your ticket number is ' + ticketno;
+                    console.log('Book ticket intent');
 
                     response.setHeader('Content-Type', 'application/json');
                     response.send(JSON.stringify({
@@ -256,71 +296,8 @@ function CallAPI(request, response) {
                         ]
                     }));
                 }
-                else {
-                    msg = "Error occurred!";
-                    commonFiles.sendMessage(response, msg);
-                }
             }
-            else if (intentFrom === 'TrainIntent.BookTicket') {
-                var message = '';
-                let boardingPoint = request.body.result.parameters.boardpoint;
-                let destination = request.body.result.parameters.destination;
-                let dateoftravel = request.body.result.parameters.dateoftravel;
-                let tickets = request.body.result.parameters.tickets;
-                let ticketno = result[0];
-                console.log(ticketno);
 
-                message = 'Train ticket booking for ' + tickets + ' is successful from ' + boardingPoint + ' - ' + destination + ' on ' + dateoftravel + '. Your ticket number is ' + ticketno;
-                console.log('Book ticket intent');
-                
-                response.setHeader('Content-Type', 'application/json');
-                response.send(JSON.stringify({
-                    "speech": "",
-                    "messages": [
-                        {
-                            "type": 0,
-                            "speech": message
-                        },
-                        {
-                            "type": 2,
-                            "title": "Can I help you with anything else?",
-                            "replies": [
-                                "Train Services",
-                                "Flight Services",
-                                "Another query"
-                            ]
-                        }
-                    ]
-                }));
-
-                // if (result[0][0].stations.length > 0) {
-                //     message = 'Train ticket booking is successful for  ';
-
-                //     response.setHeader('Content-Type', 'application/json');
-                //     response.send(JSON.stringify({
-                //         "speech": "",
-                //         "messages": [
-                //             {
-                //                 "type": 0,
-                //                 "speech": message
-                //             },
-                //             {
-                //                 "type": 2,
-                //                 "title": "Can I help you with anything else?",
-                //                 "replies": [
-                //                     "Train Services",
-                //                     "Flight Services",
-                //                     "Another query"
-                //                 ]
-                //             }
-                //         ]
-                //     }));
-                // }
-                // else {
-                //     msg = "Error occurred!";
-                //     commonFiles.sendMessage(response, msg);
-                // }
-            }
         });
 }
 
