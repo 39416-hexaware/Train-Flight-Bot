@@ -114,7 +114,7 @@ function CallAPI(request, response) {
                 };
                 console.log(data);
             }
-            else if (intentFrom === 'FlightIntent.CancelFlight') {
+            else if (intentFrom === 'FlightIntent.CancelFlight' || intentFrom === 'FlightIntent.FlightStatus') {
                 let ticketNumber = request.body.result.parameters.ticketnumber;
                 url = commonFiles.APIList['FlightAPI']();
                 console.log(url);
@@ -394,11 +394,43 @@ function CallAPI(request, response) {
                         console.log('Inside slack');
                         let arrIndex = arrMessage.findIndex(x => x.type == 1);
                         arrMessage.splice(arrIndex, 1);
-                        message += '\n' + flightdet + '\n' + flightdet;
+                        // message += '\n' + flightdet + '\n' + airportdet;
                     }
 
                     console.log(ticketno);
-                    console.log('Book ticket intent');
+
+                    response.setHeader('Content-Type', 'application/json');
+                    response.send(JSON.stringify({
+                        "speech": "",
+                        "messages": arrMessage
+                    }));
+                }
+                else if (intentFrom === 'FlightIntent.FlightStatus') {
+                    console.log('flight status');
+
+                    let ticketno = result[0][0].ticketnumber;
+                    let airportdet = result[0][0].airport.code + ' - ' + result[0][0].airport.name;
+                    let flightdet = result[0][0].carrier.code + ' - ' + result[0][0].carrier.name;
+                    let flightStatus = result[0][0].statistics.flights.status;
+                    var message = 'Flight status for flight number - ' + ticketno + ' is ' + flightStatus;
+                    message += '\n' + flightdet + '\n' + airportdet;
+                    let arrMessage = [
+                        {
+                            "type": 0,
+                            "speech": message
+                        },
+                        {
+                            "type": 2,
+                            "title": "Can I help you with anything else?",
+                            "replies": [
+                                "Train Services",
+                                "Flight Services",
+                                "Another query"
+                            ]
+                        }
+                    ];
+
+                    console.log(ticketno);
 
                     response.setHeader('Content-Type', 'application/json');
                     response.send(JSON.stringify({
