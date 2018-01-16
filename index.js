@@ -392,8 +392,8 @@ function CallAPI(request, response) {
                     ];
                     if (request.body.originalRequest.source == 'slack') {
                         console.log('Inside slack');
-                        let arrIndex = message.findIndex(x => x.type == 1);
-                        message.splice(arrIndex, 1);
+                        let arrIndex = arrMessage.findIndex(x => x.type == 1);
+                        arrMessage.splice(arrIndex, 1);
                     }
 
                     console.log(ticketno);
