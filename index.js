@@ -364,7 +364,7 @@ function CallAPI(request, response) {
                     let ticketno = result[0][0].ticketnumber;
                     let airportdet = result[0][0].airport.code + ' - ' + result[0][0].airport.name;
                     let flightdet = result[0][0].carrier.code + ' - ' + result[0][0].carrier.name;
-                    let message = [
+                    let arrMessage = [
                         {
                             "type": 0,
                             "speech": message
@@ -395,7 +395,7 @@ function CallAPI(request, response) {
                         let arrIndex = message.findIndex(x => x.type == 1);
                         message.splice(arrIndex, 1);
                     }
-                    
+
                     console.log(ticketno);
 
                     message = 'Flight ticket has been cancelled for ticket number ' + ticketno;
@@ -404,7 +404,7 @@ function CallAPI(request, response) {
                     response.setHeader('Content-Type', 'application/json');
                     response.send(JSON.stringify({
                         "speech": "",
-                        "messages": message
+                        "messages": arrMessage
                     }));
                 }
             }
