@@ -122,7 +122,7 @@ function CallAPI(request, response) {
                     "IntentName": intentFrom,
                     "TicketNumber": ticketNumber
                 };
-                
+
                 console.log(data);
             }
 
@@ -345,6 +345,43 @@ function CallAPI(request, response) {
                             {
                                 "type": 0,
                                 "speech": message
+                            },
+                            {
+                                "type": 2,
+                                "title": "Can I help you with anything else?",
+                                "replies": [
+                                    "Train Services",
+                                    "Flight Services",
+                                    "Another query"
+                                ]
+                            }
+                        ]
+                    }));
+                }
+                else if (intentFrom === 'FlightIntent.CancelFlight') {
+                    var message = '';
+                    let ticketno = result[0][0].ticketnumber;
+                    let airportdet = result[0][0].airport.code + ' - ' + result[0][0].airport.name;
+                    let flightdet = result[0][0].carrier.code + ' - ' + result[0][0].carrier.name;
+                    console.log(ticketno);
+
+                    message = 'Flight ticket has been cancelled for ticket number ' + ticketno;
+                    console.log('Book ticket intent');
+
+                    response.setHeader('Content-Type', 'application/json');
+                    response.send(JSON.stringify({
+                        "speech": "",
+                        "messages": [
+                            {
+                                "type": 0,
+                                "speech": message
+                            },
+                            {
+                                "type": 1,
+                                "title": airportdet,
+                                "image_url": "URL",
+                                "subtitle": flightdet,
+                                "buttons": []
                             },
                             {
                                 "type": 2,
