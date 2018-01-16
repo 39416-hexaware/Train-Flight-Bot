@@ -363,7 +363,7 @@ function CallAPI(request, response) {
                     let ticketno = result[0][0].ticketnumber;
                     let airportdet = result[0][0].airport.code + ' - ' + result[0][0].airport.name;
                     let flightdet = result[0][0].carrier.code + ' - ' + result[0][0].carrier.name;
-                    var message = 'Flight ticket has been cancelled for ticket number ' + ticketno;
+                    var message = 'Flight ticket has been cancelled for ticket number - ' + ticketno;
                     let arrMessage = [
                         {
                             "type": 0,
@@ -394,6 +394,7 @@ function CallAPI(request, response) {
                         console.log('Inside slack');
                         let arrIndex = arrMessage.findIndex(x => x.type == 1);
                         arrMessage.splice(arrIndex, 1);
+                        message += '\n' + flightdet + '\n' + flightdet;
                     }
 
                     console.log(ticketno);
