@@ -97,7 +97,8 @@ function CallAPI(request, response) {
                 console.log(data);
             }
             // Flight workflow & Microservices
-            else if (intentFrom === 'FlightIntent.BookTicket') {
+            else if (intentFrom === 'FlightIntent.BookFlight') {
+
                 let boardingPoint = request.body.result.parameters.boardpoint;
                 let destination = request.body.result.parameters.destination;
                 let dateoftravel = request.body.result.parameters.dateoftravel;
