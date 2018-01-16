@@ -359,6 +359,7 @@ function CallAPI(request, response) {
                     }));
                 }
                 else if (intentFrom === 'FlightIntent.CancelFlight') {
+                    console.log('Inside cancel flight');
                     var message = '';
                     let ticketno = result[0][0].ticketnumber;
                     let airportdet = result[0][0].airport.code + ' - ' + result[0][0].airport.name;
@@ -375,13 +376,6 @@ function CallAPI(request, response) {
                             {
                                 "type": 0,
                                 "speech": message
-                            },
-                            {
-                                "type": 1,
-                                "title": airportdet,
-                                "image_url": "URL",
-                                "subtitle": flightdet,
-                                "buttons": []
                             },
                             {
                                 "type": 2,
