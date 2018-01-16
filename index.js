@@ -360,10 +360,10 @@ function CallAPI(request, response) {
                 }
                 else if (intentFrom === 'FlightIntent.CancelFlight') {
                     console.log('Inside cancel flight');
-                    var message = '';
                     let ticketno = result[0][0].ticketnumber;
                     let airportdet = result[0][0].airport.code + ' - ' + result[0][0].airport.name;
                     let flightdet = result[0][0].carrier.code + ' - ' + result[0][0].carrier.name;
+                    var message = 'Flight ticket has been cancelled for ticket number ' + ticketno;
                     let arrMessage = [
                         {
                             "type": 0,
@@ -397,8 +397,6 @@ function CallAPI(request, response) {
                     }
 
                     console.log(ticketno);
-
-                    message = 'Flight ticket has been cancelled for ticket number ' + ticketno;
                     console.log('Book ticket intent');
 
                     response.setHeader('Content-Type', 'application/json');
