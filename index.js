@@ -118,11 +118,34 @@ function CallAPI(request, response) {
                 let ticketNumber = request.body.result.parameters.ticketnumber;
                 url = commonFiles.APIList['FlightAPI']();
                 console.log(url);
+                if(intentFrom === 'FlightIntent.CancelFlight') {
+                    let reason = request.body.result.parameters.reason;
+                    data = {
+                        "IntentName": intentFrom,
+                        "TicketNumber": ticketNumber.toUpperCase(),
+                        "Reason": reason
+                    };
+                }
+                else {
+                    data = {
+                        "IntentName": intentFrom,
+                        "TicketNumber": ticketNumber.toUpperCase()
+                    };
+                }
+                console.log(data);
+            }
+            else if (intentFrom === 'FlightIntent.RescheduleFlight') {
+                let ticketNumber = request.body.result.parameters.ticketnumber;
+                let dateOfReschedule = request.body.result.parameters.rescheduledate;
+                url = commonFiles.APIList['FlightAPI']();
+                console.log(url);
+
+                let reason = request.body.result.parameters.reason;
                 data = {
                     "IntentName": intentFrom,
-                    "TicketNumber": ticketNumber.toUpperCase()
+                    "TicketNumber": ticketNumber.toUpperCase(),
+                    "DateOfReschedule": dateOfReschedule
                 };
-
                 console.log(data);
             }
 
@@ -412,7 +435,39 @@ function CallAPI(request, response) {
                     let airportdet = result[0][0].airport.code + ' - ' + result[0][0].airport.name;
                     let flightdet = result[0][0].carrier.code + ' - ' + result[0][0].carrier.name;
                     let flightStatus = result[0][0].statistics.flights.status;
-                    var message = 'Flight status for flight number - ' + ticketno + ' is ' + flightStatus;
+                    var message = 'Flight status for flight number - ' + ticketno + ' is "' + flightStatus + '"';
+                    message += '\n' + flightdet + '\n' + airportdet;
+                    let arrMessage = [
+                        {
+                            "type": 0,
+                            "speech": message
+                        },
+                        {
+                            "type": 2,
+                            "title": "Can I help you with anything else?",
+                            "replies": [
+                                "Train Services",
+                                "Flight Services",
+                                "Another query"
+                            ]
+                        }
+                    ];
+
+                    console.log(ticketno);
+
+                    response.setHeader('Content-Type', 'application/json');
+                    response.send(JSON.stringify({
+                        "speech": "",
+                        "messages": arrMessage
+                    }));
+                }
+                else if (intentFrom === 'FlightIntent.RescheduleFlight') {
+                    console.log('flight status');
+
+                    let ticketno = result[0][0].ticketnumber;
+                    let airportdet = result[0][0].airport.code + ' - ' + result[0][0].airport.name;
+                    let flightdet = result[0][0].carrier.code + ' - ' + result[0][0].carrier.name;
+                    var message = 'Flight has been rescheduled for flight number - ' + ticketno + '.';
                     message += '\n' + flightdet + '\n' + airportdet;
                     let arrMessage = [
                         {
@@ -439,7 +494,6 @@ function CallAPI(request, response) {
                     }));
                 }
             }
-
         });
 }
 
