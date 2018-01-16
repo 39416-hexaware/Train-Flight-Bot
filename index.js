@@ -377,17 +377,17 @@ function CallAPI(request, response) {
                                 "type": 0,
                                 "speech": message
                             },
-                            {
-                                "type": 1,
-                                "title": airportdet,
-                                "image_url": "URL",
-                                "subtitle": flightdet,
-                                "buttons": [ {
-                                    "type": "web_url",
-                                    "url": "URL",
-                                    "title": "View Website"
-                                  }]
-                            },
+                            // {
+                            //     "type": 1,
+                            //     "title": airportdet,
+                            //     "image_url": "URL",
+                            //     "subtitle": flightdet,
+                            //     "buttons": [ {
+                            //         "type": "web_url",
+                            //         "url": "URL",
+                            //         "title": "View Website"
+                            //       }]
+                            // },
                             {
                                 "type": 2,
                                 "title": "Can I help you with anything else?",
