@@ -19,12 +19,12 @@ module.exports.sendMessage = function (response, message) {
 var APIList = {
     'RailwayAPI': () => {
         console.log('Inside Railway APIList');
-        api = 'https://limitless-beyond-94753.herokuapp.com/RailwayAPI';
+        api = 'http://34.229.40.189:7001/RailwayAPI';
         return api;
     },
     'FlightAPI': () => {
         console.log('Inside Flight APIList');
-        api = 'https://shielded-bayou-34902.herokuapp.com/FlightAPI';
+        api = 'http://34.229.40.189:7002/FlightAPI';
         return api;
     }    
 };
