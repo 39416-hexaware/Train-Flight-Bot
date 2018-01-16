@@ -267,8 +267,10 @@ function CallAPI(request, response) {
                 let destination = request.body.result.parameters.destination;
                 let dateoftravel = request.body.result.parameters.dateoftravel;
                 let tickets = request.body.result.parameters.tickets;
+                let ticketno = result[0];
+                console.log(ticketno);
 
-                message = 'Train ticket booking for ' + tickets + ' is successful from ' + boardingPoint + ' - ' + destination + ' on ' + dateoftravel + '. Your ticket number is ';
+                message = 'Train ticket booking for ' + tickets + ' is successful from ' + boardingPoint + ' - ' + destination + ' on ' + dateoftravel + '. Your ticket number is ' + ticketno;
                 console.log('Book ticket intent');
                 
                 response.setHeader('Content-Type', 'application/json');
