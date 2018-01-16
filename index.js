@@ -38,7 +38,8 @@ function CallAPI(request, response) {
             var data = '', url = '';
 
             console.log('Inside MicroService');
-
+            
+            // Train workflow & Microservices
             if (intentFrom === 'TrainIntent.CancelIntent') {
                 let cancelledDate = request.body.result.parameters.canceldate;
                 url = commonFiles.APIList['RailwayAPI']();
@@ -85,6 +86,23 @@ function CallAPI(request, response) {
                 let dateoftravel = request.body.result.parameters.dateoftravel;
                 let tickets = request.body.result.parameters.tickets;
                 url = commonFiles.APIList['RailwayAPI']();
+                console.log(url);
+                data = {
+                    "IntentName": intentFrom,
+                    "BoardingPoint": boardingPoint,
+                    "Destination": destination,
+                    "DateOfTravel": dateoftravel,
+                    "Tickets": tickets
+                };
+                console.log(data);
+            }
+            // Flight workflow & Microservices
+            else if (intentFrom === 'FlightIntent.BookTicket') {
+                let boardingPoint = request.body.result.parameters.boardpoint;
+                let destination = request.body.result.parameters.destination;
+                let dateoftravel = request.body.result.parameters.dateoftravel;
+                let tickets = request.body.result.parameters.tickets;
+                url = commonFiles.APIList['FlightAPI']();
                 console.log(url);
                 data = {
                     "IntentName": intentFrom,
@@ -274,6 +292,38 @@ function CallAPI(request, response) {
                     console.log(ticketno);
 
                     message = 'Train ticket booking for ' + tickets + ' tickets is successful from ' + boardingPoint + ' - ' + destination + ' on ' + dateoftravel + '. Your ticket number is ' + ticketno;
+                    console.log('Book ticket intent');
+
+                    response.setHeader('Content-Type', 'application/json');
+                    response.send(JSON.stringify({
+                        "speech": "",
+                        "messages": [
+                            {
+                                "type": 0,
+                                "speech": message
+                            },
+                            {
+                                "type": 2,
+                                "title": "Can I help you with anything else?",
+                                "replies": [
+                                    "Train Services",
+                                    "Flight Services",
+                                    "Another query"
+                                ]
+                            }
+                        ]
+                    }));
+                }
+                else if (intentFrom === 'FlightIntent.BookFlight') {
+                    var message = '';
+                    let boardingPoint = request.body.result.parameters.boardpoint;
+                    let destination = request.body.result.parameters.destination;
+                    let dateoftravel = request.body.result.parameters.dateoftravel;
+                    let tickets = request.body.result.parameters.tickets;
+                    let ticketno = result[0];
+                    console.log(ticketno);
+
+                    message = 'Flight ticket booking for ' + tickets + ' tickets is successful from ' + boardingPoint + ' - ' + destination + ' on ' + dateoftravel + '. Your ticket number is ' + ticketno;
                     console.log('Book ticket intent');
 
                     response.setHeader('Content-Type', 'application/json');

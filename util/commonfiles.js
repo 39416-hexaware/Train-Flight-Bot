@@ -24,7 +24,7 @@ var APIList = {
     },
     'FlightAPI': () => {
         console.log('Inside Flight APIList');
-        api = 'https://limitless-beyond-94753.herokuapp.com/RailwayAPI';
+        api = 'https://shielded-bayou-34902.herokuapp.com/FlightAPI';
         return api;
     }    
 };
