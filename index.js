@@ -118,7 +118,7 @@ function CallAPI(request, response) {
                 let ticketNumber = request.body.result.parameters.ticketnumber;
                 url = commonFiles.APIList['FlightAPI']();
                 console.log(url);
-                if (intentFrom === 'FlightIntent.CancelFlight') {
+                if(intentFrom === 'FlightIntent.CancelFlight') {
                     let reason = request.body.result.parameters.reason;
                     data = {
                         "IntentName": intentFrom,
@@ -207,41 +207,21 @@ function CallAPI(request, response) {
                         console.log(SlackResp);
                         response.setHeader('Content-Type', 'application/json');
                         response.send(JSON.stringify({
-                            // "data": {
-                            //     "facebook": {
-                            //         "attachment": {
-                            //             "type": "template",
-                            //             "payload": {
-                            //                 "template_type": "generic",
-                            //                 "elements": FBResp
-                            //             }
-                            //         }
-                            //     },
-                            //     "slack": {
-                            //         "text": "",
-                            //         "attachments": SlackResp
-                            //     }
-                            // },
-                            "speech": "",
-                            "messages": [
-                                {
-                                    "type": 0,
-                                    "speech": "Please find the list of routes covered from Source To destination"
+                            "data": {
+                                "facebook": {
+                                    "attachment": {
+                                        "type": "template",
+                                        "payload": {
+                                            "template_type": "generic",
+                                            "elements": FBResp
+                                        }
+                                    }
                                 },
-                                {
-                                    "type": 0,
-                                    "speech": "test"
-                                },
-                                {
-                                    "type": 2,
-                                    "title": "Can I help you with anything else?",
-                                    "replies": [
-                                        "Train Services",
-                                        "Flight Services",
-                                        "Another query"
-                                    ]
+                                "slack": {
+                                    "text": "",
+                                    "attachments": SlackResp
                                 }
-                            ]
+                            }
                         }));
                     }
                     else {
