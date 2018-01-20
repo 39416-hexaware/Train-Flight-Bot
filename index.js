@@ -222,6 +222,28 @@ function CallAPI(request, response) {
                                     "attachments": SlackResp
                                 }
                             }
+                        },
+                        {
+                            "speech": "",
+                            "messages": [
+                                {
+                                    "type": 0,
+                                    "speech": "Please find the list of routes covered from Source To destination"
+                                },
+                                {
+                                    "type": 0,
+                                    "speech": "test"
+                                },
+                                {
+                                    "type": 2,
+                                    "title": "Can I help you with anything else?",
+                                    "replies": [
+                                        "Train Services",
+                                        "Flight Services",
+                                        "Another query"
+                                    ]
+                                }
+                            ]
                         }));
                     }
                     else {
