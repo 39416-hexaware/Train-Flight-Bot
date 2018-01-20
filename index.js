@@ -118,7 +118,7 @@ function CallAPI(request, response) {
                 let ticketNumber = request.body.result.parameters.ticketnumber;
                 url = commonFiles.APIList['FlightAPI']();
                 console.log(url);
-                if(intentFrom === 'FlightIntent.CancelFlight') {
+                if (intentFrom === 'FlightIntent.CancelFlight') {
                     let reason = request.body.result.parameters.reason;
                     data = {
                         "IntentName": intentFrom,
@@ -221,9 +221,7 @@ function CallAPI(request, response) {
                                     "text": "",
                                     "attachments": SlackResp
                                 }
-                            }
-                        },
-                        {
+                            },
                             "speech": "",
                             "messages": [
                                 {
