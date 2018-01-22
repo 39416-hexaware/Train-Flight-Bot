@@ -4,8 +4,8 @@
   "description": "Bot with Train and Flight Booking Services",
   "main": "index.js",
   "scripts": {
-    "start": "pm2 start index.js",
-    "stop": "pm2 stop TrainMicroService"
+    "start": "pm2 start index.js --name TrainFlightBot",
+    "stop": "pm2 stop TrainFlightBot"
 
   },
   "author": "Mubashshir Mohammed A",
