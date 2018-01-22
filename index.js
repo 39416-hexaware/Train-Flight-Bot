@@ -252,7 +252,7 @@ function CallAPI(request, response) {
                         }));
                     }
                     else {
-                        message = "The train " + result[0][0].train.name + " - " + result[0][0].train.number + " from  " + result[0][0].boarding_point + " to " + result[0][0].to_station + " is scheduled for " + result[0][0].total_passengers + " passenger(s) on" + result[0][0].doj;
+                        message = "The train " + result[0][0].train.name + " - " + result[0][0].train.number + " from  " + result[0][0].boarding_point.name + " to " + result[0][0].to_station.name + " is scheduled for " + result[0][0].total_passengers + " passenger(s) on" + result[0][0].doj;
                         response.setHeader('Content-Type', 'application/json');
                         response.send(JSON.stringify({
                             "speech": "",
