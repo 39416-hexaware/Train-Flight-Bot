@@ -181,10 +181,10 @@ function CallAPI(request, response) {
                 msg = "An error occurred with API Microservice! Kindly contact adminsitrator";
                 commonFiles.sendMessage(response, msg);
             }
-            else if (!result[0][0].hasOwnProperty('response_code')) {
-                msg = "An error occurred with API Microservice! Kindly contact adminsitrator";
-                commonFiles.sendMessage(response, msg);
-            }
+            // else if (!result[0][0].hasOwnProperty('response_code')) {
+            //     msg = "An error occurred with API Microservice! Kindly contact adminsitrator";
+            //     commonFiles.sendMessage(response, msg);
+            // }
             else {
                 if (intentFrom === 'TrainIntent.CancelIntent') {
                     if (result[0][0].total > 0) {
