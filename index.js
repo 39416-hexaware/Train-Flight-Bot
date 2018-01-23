@@ -533,6 +533,46 @@ function CallAPI(request, response) {
                         "messages": arrMessage
                     }));
                 }
+                else if (intentFrom === 'FlightIntent.FlightFacilities') {
+                    let ticketno = result[0][0].ticketnumber;
+                        console.log('Check in data')
+                            // Facebook Carousel
+                            var objFBCard = new commonFiles.FBcardTemplate();
+                            objFBCard.title = "Facilities Available in Flight";
+                            objFBCard.image_url = 'https://imgak.mmtcdn.com/pwa-hlp/assets/img/hlp/deals/ic-flight-3.jpg';
+                            objFBCard.subtitle = `Flight Number : ` + result[0][0].ticketnumber + `, Class : ` + result[0][0].facilities.class + ` , Meals ` + result[0][0].facilities.food + `, Entertainment : ` + result[0][0].facilities.food + ``;
+                            FBResp.push(objFBCard);
+
+                            // Slack Carousel
+                            var objSlackCard = new commonFiles.SlackcardTemplate();
+                            objSlackCard.title = "Facilities Available in Flight";
+                            objSlackCard.text = `Flight Number : ` + result[0][0].ticketnumber + `, Class : ` + result[0][0].facilities.class + ` , Meals ` + result[0][0].facilities.food + `, Entertainment : ` + result[0][0].facilities.food + ``;
+                            objSlackCard.image_url = 'https://imgak.mmtcdn.com/pwa-hlp/assets/img/hlp/deals/ic-flight-3.jpg';
+                            objSlackCard.thumb_url = 'https://imgak.mmtcdn.com/pwa-hlp/assets/img/hlp/deals/ic-flight-3.jpg';
+                            objSlackCard.footer = 'Flight Facilities';
+                            SlackResp.push(objSlackCard);
+
+                        console.log(FBResp);
+                        console.log(SlackResp);
+                        response.setHeader('Content-Type', 'application/json');
+                        response.send(JSON.stringify({
+                            "data": {
+                                "facebook": {
+                                    "attachment": {
+                                        "type": "template",
+                                        "payload": {
+                                            "template_type": "generic",
+                                            "elements": FBResp
+                                        }
+                                    }
+                                },
+                                "slack": {
+                                    "text": "",
+                                    "attachments": SlackResp
+                                }
+                            }
+                        }));
+                }
             }
         });
 }
