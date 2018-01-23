@@ -114,7 +114,7 @@ function CallAPI(request, response) {
                 };
                 console.log(data);
             }
-            else if (intentFrom === 'FlightIntent.CancelFlight' || intentFrom === 'FlightIntent.FlightStatus') {
+            else if (intentFrom === 'FlightIntent.CancelFlight' || intentFrom === 'FlightIntent.FlightStatus' || intentFrom === 'FlightIntent.FlightFacilities') {
                 let ticketNumber = request.body.result.parameters.ticketnumber;
                 url = commonFiles.APIList['FlightAPI']();
                 console.log(url);
