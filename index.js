@@ -276,7 +276,9 @@ function CallAPI(request, response) {
                     }
                 }
                 else if (intentFrom === 'TrainIntent.PNRStatus') {
+                    console.log(result[0][0].response_code);
                     if (result[0][0].response_code == '200') {
+                        console.log('PNR Success');
                         message = "The train " + result[0][0].train.name + " - " + result[0][0].train.number + " from  " + result[0][0].boarding_point.name + " to " + result[0][0].to_station.name + " is scheduled for " + result[0][0].total_passengers + " passenger(s) on" + result[0][0].doj;
                         response.setHeader('Content-Type', 'application/json');
                         response.send(JSON.stringify({
@@ -299,6 +301,7 @@ function CallAPI(request, response) {
                         }));
                     }
                     else if (result[0][0].response_code == '220') {
+                        console.log('PNR Flueshed');
                         response.setHeader('Content-Type', 'application/json');
                         response.send(JSON.stringify({
                             "speech": "",
@@ -320,6 +323,7 @@ function CallAPI(request, response) {
                         }));
                     }
                     else {
+                        console.log('PNR Failed');
                         response.setHeader('Content-Type', 'application/json');
                         response.send(JSON.stringify({
                             "speech": "",
