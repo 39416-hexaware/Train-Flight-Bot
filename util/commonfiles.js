@@ -26,16 +26,16 @@ var APIList = {
         console.log('Inside Flight APIList');
         api = 'http://34.229.40.189:7002/FlightAPI';
         return api;
-    }    
+    }
 };
 
-var FBcardTemplate = function() {
+var FBcardTemplate = function () {
     var title = null;
     var image_url = null;
     var subtitle = null;
 };
 
-var SlackcardTemplate = function() {
+var SlackcardTemplate = function () {
     var fallback = "Required plain-text summary of the attachment.";
     color = "#36a64f";
     var pretext = null;
@@ -48,6 +48,19 @@ var SlackcardTemplate = function() {
     var ts = 123456789;
 };
 
+var CustomListTemplate = function () {
+    var type = 1;
+    var title = null;
+    var image_url = null;
+    var subtitle = null;
+    var buttons = [{
+        "type": "web_url",
+        "url": "URL",
+        "title": "View Website"
+    }];
+}
+
 module.exports.APIList = APIList;
 module.exports.FBcardTemplate = FBcardTemplate;
 module.exports.SlackcardTemplate = SlackcardTemplate;
+module.exports.CustomListTemplate = CustomListTemplate;

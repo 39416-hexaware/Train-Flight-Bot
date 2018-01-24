@@ -118,7 +118,7 @@ function CallAPI(request, response) {
                 let ticketNumber = request.body.result.parameters.ticketnumber;
                 url = commonFiles.APIList['FlightAPI']();
                 console.log(url);
-                if(intentFrom === 'FlightIntent.CancelFlight') {
+                if (intentFrom === 'FlightIntent.CancelFlight') {
                     let reason = request.body.result.parameters.reason;
                     data = {
                         "IntentName": intentFrom,
@@ -174,7 +174,7 @@ function CallAPI(request, response) {
         }],
         function (err, result) {
             var msg = '';
-            var FBResp = [], SlackResp = [];
+            var FBResp = [], SlackResp = [], richmsg = [];
             console.log('Final Result');
             console.log(result);
             if (result == null || result == undefined) {
@@ -188,44 +188,72 @@ function CallAPI(request, response) {
             else {
                 if (intentFrom === 'TrainIntent.CancelIntent') {
                     if (result[0][0].total > 0) {
-                        console.log('Checking withd data')
+                        console.log('Checking withd data');
+                        richmsg = [{
+                            "type": 0,
+                            "speech": "Cancelled Trains"
+                        }];
                         for (let i = 0; i < 5; i++) {
-                            // Facebook Carousel
-                            var objFBCard = new commonFiles.FBcardTemplate();
-                            objFBCard.title = result[0][0].trains[i].name;
-                            objFBCard.image_url = 'https://www.bahn.com/en/view/mdb/pv/agenturservice/2011/mdb_22990_ice_3_schnellfahrstrecke_nuernberg_-_ingolstadt_1000x500_cp_0x144_1000x644.jpg';
-                            objFBCard.subtitle = `Train Number : ` + result[0][0].trains[i].number + `, Source : ` + result[0][0].trains[i].source.name + ` - ` + result[0][0].trains[i].source.code + `, Destination : ` + result[0][0].trains[i].dest.name + ` - ` + result[0][0].trains[i].dest.code + ``;
-                            FBResp.push(objFBCard);
+                            // // Facebook Carousel
+                            // var objFBCard = new commonFiles.FBcardTemplate();
+                            // objFBCard.title = result[0][0].trains[i].name;
+                            // objFBCard.image_url = 'https://www.bahn.com/en/view/mdb/pv/agenturservice/2011/mdb_22990_ice_3_schnellfahrstrecke_nuernberg_-_ingolstadt_1000x500_cp_0x144_1000x644.jpg';
+                            // objFBCard.subtitle = `Train Number : ` + result[0][0].trains[i].number + `, Source : ` + result[0][0].trains[i].source.name + ` - ` + result[0][0].trains[i].source.code + `, Destination : ` + result[0][0].trains[i].dest.name + ` - ` + result[0][0].trains[i].dest.code + ``;
+                            // FBResp.push(objFBCard);
 
-                            // Slack Carousel
-                            var objSlackCard = new commonFiles.SlackcardTemplate();
-                            objSlackCard.title = result[0][0].trains[i].name;
-                            objSlackCard.text = `Train Number : ` + result[0][0].trains[i].number + `, Source : ` + result[0][0].trains[i].source.name + ` - ` + result[0][0].trains[i].source.code + `, Destination : ` + result[0][0].trains[i].dest.name + ` - ` + result[0][0].trains[i].dest.code + ``;
-                            objSlackCard.image_url = 'https://www.bahn.com/en/view/mdb/pv/agenturservice/2011/mdb_22990_ice_3_schnellfahrstrecke_nuernberg_-_ingolstadt_1000x500_cp_0x144_1000x644.jpg';
-                            objSlackCard.thumb_url = 'https://www.bahn.com/en/view/mdb/pv/agenturservice/2011/mdb_22990_ice_3_schnellfahrstrecke_nuernberg_-_ingolstadt_1000x500_cp_0x144_1000x644.jpg';
-                            objSlackCard.footer = 'Cancelled';
-                            SlackResp.push(objSlackCard);
+                            // // Slack Carousel
+                            // var objSlackCard = new commonFiles.SlackcardTemplate();
+                            // objSlackCard.title = result[0][0].trains[i].name;
+                            // objSlackCard.text = `Train Number : ` + result[0][0].trains[i].number + `, Source : ` + result[0][0].trains[i].source.name + ` - ` + result[0][0].trains[i].source.code + `, Destination : ` + result[0][0].trains[i].dest.name + ` - ` + result[0][0].trains[i].dest.code + ``;
+                            // objSlackCard.image_url = 'https://www.bahn.com/en/view/mdb/pv/agenturservice/2011/mdb_22990_ice_3_schnellfahrstrecke_nuernberg_-_ingolstadt_1000x500_cp_0x144_1000x644.jpg';
+                            // objSlackCard.thumb_url = 'https://www.bahn.com/en/view/mdb/pv/agenturservice/2011/mdb_22990_ice_3_schnellfahrstrecke_nuernberg_-_ingolstadt_1000x500_cp_0x144_1000x644.jpg';
+                            // objSlackCard.footer = 'Cancelled';
+                            // SlackResp.push(objSlackCard);
+
+                            var objList = new commonFiles.CustomListTemplate();
+                            objList.type = 1;
+                            objList.title = result[0][0].trains[i].name;
+                            objList.image_url = 'https://www.bahn.com/en/view/mdb/pv/agenturservice/2011/mdb_22990_ice_3_schnellfahrstrecke_nuernberg_-_ingolstadt_1000x500_cp_0x144_1000x644.jpg';
+                            objList.subtitle = `Train Number : ` + result[0][0].trains[i].number + `, Source : ` + result[0][0].trains[i].source.name + ` - ` + result[0][0].trains[i].source.code + `, Destination : ` + result[0][0].trains[i].dest.name + ` - ` + result[0][0].trains[i].dest.code + ``;
+                            objList.buttons = [{
+                                "type": "web_url",
+                                "url": "URL",
+                                "title": "View Website"
+                            }];
+                            richmsg.push(JSON.parse(JSON.stringify(objList)));
                         }
 
-                        console.log(FBResp);
-                        console.log(SlackResp);
+                        richmsg.push({
+                            "type": 2,
+                            "title": "Can I help you with anything else?",
+                            "replies": [
+                                "Train Services",
+                                "Flight Services",
+                                "Another query"
+                            ]
+                        });
+
                         response.setHeader('Content-Type', 'application/json');
+                        // response.send(JSON.stringify({
+                        //     "data": {
+                        //         "facebook": {
+                        //             "attachment": {
+                        //                 "type": "template",
+                        //                 "payload": {
+                        //                     "template_type": "generic",
+                        //                     "elements": FBResp
+                        //                 }
+                        //             }
+                        //         },
+                        //         "slack": {
+                        //             "text": "",
+                        //             "attachments": SlackResp
+                        //         }
+                        //     }
+                        // }));
                         response.send(JSON.stringify({
-                            "data": {
-                                "facebook": {
-                                    "attachment": {
-                                        "type": "template",
-                                        "payload": {
-                                            "template_type": "generic",
-                                            "elements": FBResp
-                                        }
-                                    }
-                                },
-                                "slack": {
-                                    "text": "",
-                                    "attachments": SlackResp
-                                }
-                            }
+                            "speech": "",
+                            "messages": richmsg
                         }));
                     }
                     else {
@@ -535,43 +563,43 @@ function CallAPI(request, response) {
                 }
                 else if (intentFrom === 'FlightIntent.FlightFacilities') {
                     let ticketno = result[0][0].ticketnumber;
-                        console.log('Check in data')
-                            // Facebook Carousel
-                            var objFBCard = new commonFiles.FBcardTemplate();
-                            objFBCard.title = "Facilities Available in Flight";
-                            objFBCard.image_url = 'https://imgak.mmtcdn.com/pwa-hlp/assets/img/hlp/deals/ic-flight-3.jpg';
-                            objFBCard.subtitle = `Flight Number : ` + result[0][0].ticketnumber + `, Class : ` + result[0][0].facilities.class + ` , Meals ` + result[0][0].facilities.food + `, Entertainment : ` + result[0][0].facilities.food + ``;
-                            FBResp.push(objFBCard);
+                    console.log('Check in data')
+                    // Facebook Carousel
+                    var objFBCard = new commonFiles.FBcardTemplate();
+                    objFBCard.title = "Facilities Available in Flight";
+                    objFBCard.image_url = 'https://imgak.mmtcdn.com/pwa-hlp/assets/img/hlp/deals/ic-flight-3.jpg';
+                    objFBCard.subtitle = `Flight Number : ` + result[0][0].ticketnumber + `, Class : ` + result[0][0].facilities.class + ` , Meals ` + result[0][0].facilities.food + `, Entertainment : ` + result[0][0].facilities.food + ``;
+                    FBResp.push(objFBCard);
 
-                            // Slack Carousel
-                            var objSlackCard = new commonFiles.SlackcardTemplate();
-                            objSlackCard.title = "Facilities Available in Flight";
-                            objSlackCard.text = `Flight Number : ` + result[0][0].ticketnumber + `, Class : ` + result[0][0].facilities.class + ` , Meals ` + result[0][0].facilities.food + `, Entertainment : ` + result[0][0].facilities.food + ``;
-                            objSlackCard.image_url = 'https://imgak.mmtcdn.com/pwa-hlp/assets/img/hlp/deals/ic-flight-3.jpg';
-                            objSlackCard.thumb_url = 'https://imgak.mmtcdn.com/pwa-hlp/assets/img/hlp/deals/ic-flight-3.jpg';
-                            objSlackCard.footer = 'Flight Facilities';
-                            SlackResp.push(objSlackCard);
+                    // Slack Carousel
+                    var objSlackCard = new commonFiles.SlackcardTemplate();
+                    objSlackCard.title = "Facilities Available in Flight";
+                    objSlackCard.text = `Flight Number : ` + result[0][0].ticketnumber + `, Class : ` + result[0][0].facilities.class + ` , Meals ` + result[0][0].facilities.food + `, Entertainment : ` + result[0][0].facilities.food + ``;
+                    objSlackCard.image_url = 'https://imgak.mmtcdn.com/pwa-hlp/assets/img/hlp/deals/ic-flight-3.jpg';
+                    objSlackCard.thumb_url = 'https://imgak.mmtcdn.com/pwa-hlp/assets/img/hlp/deals/ic-flight-3.jpg';
+                    objSlackCard.footer = 'Flight Facilities';
+                    SlackResp.push(objSlackCard);
 
-                        console.log(FBResp);
-                        console.log(SlackResp);
-                        response.setHeader('Content-Type', 'application/json');
-                        response.send(JSON.stringify({
-                            "data": {
-                                "facebook": {
-                                    "attachment": {
-                                        "type": "template",
-                                        "payload": {
-                                            "template_type": "generic",
-                                            "elements": FBResp
-                                        }
+                    console.log(FBResp);
+                    console.log(SlackResp);
+                    response.setHeader('Content-Type', 'application/json');
+                    response.send(JSON.stringify({
+                        "data": {
+                            "facebook": {
+                                "attachment": {
+                                    "type": "template",
+                                    "payload": {
+                                        "template_type": "generic",
+                                        "elements": FBResp
                                     }
-                                },
-                                "slack": {
-                                    "text": "",
-                                    "attachments": SlackResp
                                 }
+                            },
+                            "slack": {
+                                "text": "",
+                                "attachments": SlackResp
                             }
-                        }));
+                        }
+                    }));
                 }
             }
         });
