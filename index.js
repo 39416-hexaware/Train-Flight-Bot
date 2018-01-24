@@ -226,6 +226,20 @@ function CallAPI(request, response) {
                                     "attachments": SlackResp
                                 }
                             }
+                        },
+                        {
+                            "speech": "",
+                            "messages": [
+                                {
+                                    "type": 2,
+                                    "title": "Can I help you with anything else?",
+                                    "replies": [
+                                        "Train Services",
+                                        "Flight Services",
+                                        "Another query"
+                                    ]
+                                }
+                            ]
                         }));
                     }
                     else {
