@@ -12,7 +12,22 @@ module.exports.headerTemplate = function () {
 module.exports.sendMessage = function (response, message) {
     response.setHeader('Content-Type', 'application/json');
     response.send(JSON.stringify({
-        "speech": message, "displayText": message
+        "speech": "",
+        "messages": [
+            {
+                "type": 0,
+                "speech": message
+            },
+            {
+                "type": 2,
+                "title": "Can I help you with anything else?",
+                "replies": [
+                    "Train Services",
+                    "Flight Services",
+                    "Another query"
+                ]
+            }
+        ]
     }));
 }
 
