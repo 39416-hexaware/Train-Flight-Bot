@@ -276,7 +276,29 @@ function CallAPI(request, response) {
                     }
                 }
                 else if (intentFrom === 'TrainIntent.PNRStatus') {
-                    if (result[0][0].response_code == '220') {
+                    if (result[0][0].response_code == '200') {
+                        message = "The train " + result[0][0].train.name + " - " + result[0][0].train.number + " from  " + result[0][0].boarding_point.name + " to " + result[0][0].to_station.name + " is scheduled for " + result[0][0].total_passengers + " passenger(s) on" + result[0][0].doj;
+                        response.setHeader('Content-Type', 'application/json');
+                        response.send(JSON.stringify({
+                            "speech": "",
+                            "messages": [
+                                {
+                                    "type": 0,
+                                    "speech": message
+                                },
+                                {
+                                    "type": 2,
+                                    "title": "Can I help you with anything else?",
+                                    "replies": [
+                                        "Train Services",
+                                        "Flight Services",
+                                        "Another query"
+                                    ]
+                                }
+                            ]
+                        }));
+                    }
+                    else if (result[0][0].response_code == '220') {
                         response.setHeader('Content-Type', 'application/json');
                         response.send(JSON.stringify({
                             "speech": "",
@@ -298,14 +320,13 @@ function CallAPI(request, response) {
                         }));
                     }
                     else {
-                        message = "The train " + result[0][0].train.name + " - " + result[0][0].train.number + " from  " + result[0][0].boarding_point.name + " to " + result[0][0].to_station.name + " is scheduled for " + result[0][0].total_passengers + " passenger(s) on" + result[0][0].doj;
                         response.setHeader('Content-Type', 'application/json');
                         response.send(JSON.stringify({
                             "speech": "",
                             "messages": [
                                 {
                                     "type": 0,
-                                    "speech": message
+                                    "speech": "An error has occurred with your request. Please try again later."
                                 },
                                 {
                                     "type": 2,
