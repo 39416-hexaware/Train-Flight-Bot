@@ -36,6 +36,7 @@ function CallAPI(request, response) {
         function (firstfn) {
             intentFrom = request.body.result.action;
             var data = '', url = '';
+            var msg = '';
 
             console.log('Inside MicroService');
 
@@ -98,7 +99,6 @@ function CallAPI(request, response) {
             }
             // Flight workflow & Microservices
             else if (intentFrom === 'FlightIntent.BookFlight') {
-
                 let boardingPoint = request.body.result.parameters.boardpoint;
                 let destination = request.body.result.parameters.destination;
                 let dateoftravel = request.body.result.parameters.dateoftravel;
@@ -118,35 +118,49 @@ function CallAPI(request, response) {
                 let ticketNumber = request.body.result.parameters.ticketnumber;
                 url = commonFiles.APIList['FlightAPI']();
                 console.log(url);
-                if (intentFrom === 'FlightIntent.CancelFlight') {
-                    let reason = request.body.result.parameters.reason;
-                    data = {
-                        "IntentName": intentFrom,
-                        "TicketNumber": ticketNumber.toUpperCase(),
-                        "Reason": reason
-                    };
+                if(ticketNumber.toUpperCase() == 'PLANE12345' || ticketNumber.toUpperCase() == 'PLANE39416' || ticketNumber.toUpperCase() == 'PLANE39402' || ticketNumber.toUpperCase() == 'PLANE13579') {
+                    if (intentFrom === 'FlightIntent.CancelFlight') {
+                        let reason = request.body.result.parameters.reason;
+                        data = {
+                            "IntentName": intentFrom,
+                            "TicketNumber": ticketNumber.toUpperCase(),
+                            "Reason": reason
+                        };
+                    }
+                    else {
+                        data = {
+                            "IntentName": intentFrom,
+                            "TicketNumber": ticketNumber.toUpperCase()
+                        };
+                    }
+                    console.log(data);
                 }
                 else {
-                    data = {
-                        "IntentName": intentFrom,
-                        "TicketNumber": ticketNumber.toUpperCase()
-                    };
+                    msg = ticketNumber + "is not found in the database!";
+                    commonFiles.sendMessage(response, msg);
+                    return;
                 }
-                console.log(data);
+                
             }
             else if (intentFrom === 'FlightIntent.RescheduleFlight') {
                 let ticketNumber = request.body.result.parameters.ticketnumber;
                 let dateOfReschedule = request.body.result.parameters.rescheduledate;
                 url = commonFiles.APIList['FlightAPI']();
                 console.log(url);
-
-                let reason = request.body.result.parameters.reason;
-                data = {
-                    "IntentName": intentFrom,
-                    "TicketNumber": ticketNumber.toUpperCase(),
-                    "DateOfReschedule": dateOfReschedule
-                };
-                console.log(data);
+                if(ticketNumber.toUpperCase() == 'PLANE12345' || ticketNumber.toUpperCase() == 'PLANE39416' || ticketNumber.toUpperCase() == 'PLANE39402' || ticketNumber.toUpperCase() == 'PLANE13579') {
+                    let reason = request.body.result.parameters.reason;
+                    data = {
+                        "IntentName": intentFrom,
+                        "TicketNumber": ticketNumber.toUpperCase(),
+                        "DateOfReschedule": dateOfReschedule
+                    };
+                    console.log(data);
+                }
+                else {
+                    msg = ticketNumber + "is not found in the database!";
+                    commonFiles.sendMessage(response, msg);
+                    return;
+                }                
             }
 
             var options = {
